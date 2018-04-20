@@ -411,13 +411,13 @@ void test_wfnSprintf(void)
     unsigned char   fmt_test3[] = "number=%0d bin=%0b hex=%0x";
     unsigned char   exp_test1[] = "str=cadena char=a int=50 bin=110010 hex=32";
     unsigned char   exp_test2[] = "res=50 hex=32 str=cadena";
-    unsigned char   exp_test3[] = "number=50 bin=00110010 hex=0032";
+    unsigned char   exp_test3[] = "number=00050 bin=0000000000110010 hex=0032";
     unsigned char   out_test1[64];
     unsigned char   out_test2[64];
     unsigned char   out_test3[64];
     unsigned char   str[] = "cadena";
     unsigned char   c = 'a';
-    unsigned char   number = 50;
+    unsigned short  number = 50;
     unsigned short  len = 0;
     unsigned short  exp_len = 0;
     unsigned short  i = 0;
@@ -440,7 +440,7 @@ void test_wfnSprintf(void)
     exp_len = 42;
 
     len = wfnSprintf(out_test1, fmt_test1, args);
-    ret = check_test("wfnSprintf()", 1, (void *)out_test1, (void *)exp_test1, sizeof(unsigned char)*64);
+    ret = check_test("wfnSprintf()", 1, (void *)out_test1, (void *)exp_test1, sizeof(unsigned char)*len);
     ret = check_test("wfnSprintf() - len", 2, (void *)&len, (void *)&exp_len, sizeof(unsigned short));
 
     ////////////////           Second test            ////////////////////
@@ -452,7 +452,7 @@ void test_wfnSprintf(void)
     exp_len = 24;
 
     len = wfnSprintf(out_test2, fmt_test2, args);
-    ret = check_test("wfnSprintf()", 3, (void *)out_test2, (void *)exp_test2, sizeof(unsigned char)*64);
+    ret = check_test("wfnSprintf()", 3, (void *)out_test2, (void *)exp_test2, sizeof(unsigned char)*len);
     ret = check_test("wfnSprintf() - len", 4, (void *)&len, (void *)&exp_len, sizeof(unsigned short));
 
     ////////////////           Third test            ////////////////////
@@ -461,10 +461,10 @@ void test_wfnSprintf(void)
     args[2] = &number;
     args[3] = NULL;
     args[4] = NULL;
-    exp_len = 31;
+    exp_len = 42;
 
     len = wfnSprintf(out_test3, fmt_test3, args);
-    ret = check_test("wfnSprintf()", 5, (void *)out_test3, (void *)exp_test3, sizeof(unsigned char)*64);
+    ret = check_test("wfnSprintf()", 5, (void *)out_test3, (void *)exp_test3, sizeof(unsigned char)*len);
     ret = check_test("wfnSprintf() - len", 6, (void *)&len, (void *)&exp_len, sizeof(unsigned short));
 
 }

@@ -316,36 +316,67 @@ void vfnSort (unsigned char* bpString, unsigned short wStringSize)
     }
 }
 
-static void reverseStr(unsigned char *str)
+/**
+Descripcion: Invierte los caracteres de un string
+**/
+static void vfnReverseStr(unsigned char *str)
 {
-    unsigned short len = wfnStrLen(str);
+    /* get range */
+    unsigned char * start = str;
+    unsigned char * end = start + wfnStrLen(str) - 1; /* -1 for \0 */
+    unsigned char temp;
+
+    /* reverse */
+    while (end > start)
+    {
+        /* swap */
+        temp = *start;
+        *start = *end;
+        *end = temp;
+
+        /* move */
+        ++start;
+        --end;
+    }
 }
 
-static unsigned short convertIntToAsc(unsigned short n, unsigned char * str)
+/**
+Descripcion: convierte un entero de 16 bits a ascii de acuerdo a
+la base enviada 
+**/
+static unsigned short wfnConvertIntToAsc(unsigned short n, unsigned char * str, unsigned short base)
 {
     unsigned char res = 0;
     unsigned char* p = str;
+    unsigned short len = 0;
+    unsigned char hex[] = "0123456789ABCDEF";
 
-    while (n > 0)
+    if (str != NULL)
     {
-        res = n % 10;
-        *p = res + '0';
-        n = (unsigned short)(n/10);
-        p++;
+        while (n > 0) 
+        {
+            res = n % base;
+
+            if (base == 16) //Hex
+            {
+                *p = hex[res];
+            }
+            else
+            {
+                *p = res + '0'; 
+            }
+
+            n -= res;
+            n /= base;
+            p++;
+        }
+
+        *p = '\0';
+        vfnReverseStr(str);
+        len = wfnStrLen(str);
     }
 
-    *p = '\0';
-    reverseStr(str);
-
-    return wfnStrLen(str);
-}
-
-static unsigned short convertIntToBin(unsigned short n, unsigned char * strConv)
-{
-}
-
-static unsigned short convertIntToHex(unsigned short n, unsigned char * strConv)
-{
+    return len;
 }
 
 /**
@@ -365,9 +396,12 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
 {
     char         * str = string;       //copy the pointer to the first position
     unsigned short index_arg = 0;
-    unsigned char  c = 0;
+    unsigned char  c_value = 0;
+    unsigned short int_value = 0;
+    unsigned char *str_value = NULL;
     unsigned char  strConv[32];
     unsigned short len = 0;
+    unsigned char  add_zero = 0;
 
     if (string != NULL
         && fmt != NULL)
@@ -376,7 +410,8 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
         {
             //if there is a format character
             if (args != NULL
-                && *fmt == '%')
+                && (*fmt == '%'
+                    || add_zero))
             {
                 //increase the pointer
                 fmt++;
@@ -384,61 +419,104 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                 switch (*fmt)
                 {
                     case 'c':
-                        c = *((unsigned char*)(args[index_arg]));
+                        c_value = *((unsigned char*)(args[index_arg]));
                         //insert char
-                        *str = c;
+                        *str = c_value;
 
                         str++;
                         index_arg++;
                         break;
                     case 'd':
+                        int_value = *((unsigned short*)(args[index_arg]));
                         //convert int to str
-                        len = convertIntToAsc(*((unsigned short*)(args[index_arg])), strConv);
+                        len = wfnConvertIntToAsc(int_value, strConv, 10);
 
                         if (len > 0)
                         {
+                            if (add_zero)
+                            {
+                                //fill with 0
+                                vfnMemSet(str, '0', 5 - len);
+                                str += (5 - len);
+                            }
+
                             //insert str
                             vfnMemCpy(strConv, str, len);
                             str += len;
                         }
                         index_arg++;
+                        add_zero = 0;
                         break;
                     case 's':
-                        len = wfnStrLen((unsigned char*)(args[index_arg]));
+                        str_value = (unsigned char*)(args[index_arg]);
+                        len = wfnStrLen(str_value);
 
                         if (len > 0)
                         {
                             //insert str
-                            vfnMemCpy((unsigned char*)(args[index_arg]), str, len);
+                            vfnMemCpy(str_value, str, len);
                             str += len;
                         }
 
                         index_arg++;
                         break; 
                     case 'x':
+                        int_value = *((unsigned short*)(args[index_arg]));
                         //convert int to hex
-                        len = convertIntToHex(*((unsigned short*)(args[index_arg])), strConv);
+                        len = wfnConvertIntToAsc(int_value, strConv, 16);
 
                         if (len > 0)
                         {
+                            if (add_zero)
+                            {
+                                //fill with 0
+                                vfnMemSet(str, '0', 4 - len);
+                                str += (4 - len);
+                            }
+
                             //insert str
                             vfnMemCpy(strConv, str, len);
                             str += len;
                         }
                         index_arg++;
+                        add_zero = 0;
                         break;
                     case 'b':
+                        int_value = *((unsigned short*)(args[index_arg]));
                         //convert int to bin
-                        len = convertIntToBin(*((unsigned short*)(args[index_arg])), strConv);
+                        len = wfnConvertIntToAsc(int_value, strConv, 2);
 
                         if (len > 0)
                         {
+                            if (add_zero)
+                            {
+                                //fill with 0
+                                vfnMemSet(str, '0', 16 - len);
+                                str += (16 - len);
+                            }
+
                             //insert str
                             vfnMemCpy(strConv, str, len);
                             str += len;
                         }
                         index_arg++;
+                        add_zero = 0;
                         break;
+                    case '0':
+                        if (*(fmt + 1) == 'd'
+                            || *(fmt + 1) == 'x'
+                            || *(fmt + 1) == 'b')
+                        {
+                            fmt--;
+                            add_zero = 1;
+                        }
+                        else
+                        {
+                            //just copy this charater to the string
+                            *str = *fmt;
+                            str++;
+                        }
+                        break; 
                     default:
                         //invalid format character
                         //just copy this charater to the string
