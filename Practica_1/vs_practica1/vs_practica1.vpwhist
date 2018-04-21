@@ -5,28 +5,28 @@ vs_practica1.vpj=20180420163949292
 [ActiveConfig]
 vs_practica1.vpj=Debug
 [State]
-SCREEN: 1600 900 1986 -44 1148 808 0 0 M 0 0 0 0 1119 981 0
-CWD: ..\vs_practica1
-BUFFER: BN="..\practica_1.c"
-BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=0 ST=14 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=119407456 TL=0 MLL=0 ASE=0 LNL=1 LCF=6 CAPS=0 E=0 ESBU2=1 CL="" SC="" SCE= SCU=
-VIEW: LN=.6746 CL=1 LE=0 CX=1 CY=27 WI=5 BI=33 HT=0 HN=0 HF=0 HC=4
-BUFFER: BN="..\main.c"
-BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=0 ST=14 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=121439072 TL=0 MLL=0 ASE=0 LNL=1 LCF=6 CAPS=0 E=0 ESBU2=1 CL="" SC="" SCE= SCU=
-VIEW: LN=.12827 CL=1 LE=0 CX=1 CY=27 WI=5 BI=25 HT=0 HN=0 HF=0 HC=4
+SCREEN: 1600 900 1986 -44 1150 810 0 0 M 0 0 0 0 1119 981 0
+CWD: ..\..\Practica_2\vs_practica2
 BUFFER: BN="..\practica_1.h"
 BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=0 ST=14 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=100663392 TL=0 MLL=0 ASE=0 LNL=1 LCF=6 CAPS=0 E=0 ESBU2=1 CL="" SC="" SCE= SCU=
-VIEW: LN=.0 CL=1 LE=0 CX=1 CY=0 WI=5 BI=54 HT=0 HN=0 HF=0 HC=4
+VIEW: LN=.0 CL=1 LE=0 CX=1 CY=0 WI=5 BI=17 HT=0 HN=0 HF=0 HC=4
+BUFFER: BN="..\practica_1.c"
+BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=0 ST=14 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=121570144 TL=0 MLL=0 ASE=0 LNL=1 LCF=6 CAPS=0 E=0 ESBU2=1 CL="" SC="" SCE= SCU=
+VIEW: LN=.8334 CL=21 LE=0 CX=21 CY=31 WI=5 BI=14 HT=0 HN=0 HF=0 HC=4
+BUFFER: BN="..\main.c"
+BI: MA=1 74 1  TABS=1 5  WWS=1 IWT=0 ST=14 IN=2 BW=0 US=32000 RO=0 SE=1 SN=0 BIN=0 MN=C/C++	HM=0 MF=121439072 TL=0 MLL=0 ASE=0 LNL=1 LCF=6 CAPS=0 E=0 ESBU2=1 CL="" SC="" SCE= SCU=
+VIEW: LN=.16059 CL=1 LE=0 CX=1 CY=32 WI=5 BI=16 HT=0 HN=0 HF=0 HC=4
+WINDOW: 1 22 1117 958 0 0 N  WF=0 WT=3 ",,," DID=0
+BUFFER: BN="..\practica_1.c"
+VIEW: LN=.8334 CL=21 LE=0 CX=26 CY=31 WI=160 BI=14 HT=0 HN=0 HF=0 HC=4
 WINDOW: 1 22 1117 958 0 0 N  WF=0 WT=4 ",,," DID=0
 BUFFER: BN="..\practica_1.h"
-VIEW: LN=.0 CL=1 LE=0 CX=6 CY=0 WI=583 BI=54 HT=0 HN=0 HF=0 HC=4
-WINDOW: 1 22 1020 924 0 0 N  WF=0 WT=3 ",,," DID=0
-BUFFER: BN="..\practica_1.c"
-VIEW: LN=.6746 CL=1 LE=0 CX=6 CY=27 WI=398 BI=33 HT=0 HN=0 HF=0 HC=4
+VIEW: LN=.0 CL=1 LE=0 CX=6 CY=0 WI=163 BI=17 HT=0 HN=0 HF=0 HC=4
 WINDOW: 1 22 1117 958 0 0 N  WF=0 WT=2 ",,," DID=0
 BUFFER: BN="..\main.c"
-VIEW: LN=.12666 CL=16 LE=0 CX=21 CY=43 WI=376 BI=25 HT=0 HN=0 HF=0 HC=4
+VIEW: LN=.15279 CL=20 LE=0 CX=25 CY=13 WI=667 BI=16 HT=0 HN=0 HF=0 HC=4
 MDISTATE: 1
-AAAAAAAAAAHaAAAAAAAAADcAAAd/AAAEC+oAAAAC+gAAAAMAAAADAAAAAAAAAAEAAAAC+gAAAAMAAAADAAAAAgAAAAEAAAAA/AAAAHYAMgA6ADoAOgBDADoAXABQAGUAcgBzAG8AbgBhAGwAXABFAHMAYwB1AGUAbABhAFwATQBpAGMAcgBvAGMAbwBtAHAAdQB0AGEAZABvAHIAYQBzAFwAUAByAGEAYwB0AGkAYwBhAF8AMQBcAG0AYQBpAG4ALgBjAQD/////AAH8AAAAggAzADoAOgA6AEMAOgBcAFAAZQByAHMAbwBuAGEAbABcAEUAcwBjAHUAZQBsAGEAXABNAGkAYwByAG8AYwBvAG0AcAB1AHQAYQBkAG8AcgBhAHMAXABQAHIAYQBjAHQAaQBjAGEAXwAxAFwAcAByAGEAYwB0AGkAYwBhAF8AMQAuAGMAAP////8AAPwAAACCADQAOgA6ADoAQwA6AFwAUABlAHIAcwBvAG4AYQBsAFwARQBzAGMAdQBlAGwAYQBcAE0AaQBjAHIAbwBjAG8AbQBwAHUAdABhAGQAbwByAGEAcwBcAFAAcgBhAGMAdABpAGMAYQBfADEAXABwAHIAYQBjAHQAaQBjAGEAXwAxAC4AaAAA/////wAA
+AAAAAAAAAAHaAAAAAAAAADcAAAd/AAAEC+oAAAAC+gAAAAMAAAADAAAAAAAAAAIAAAAB+gAAAAMAAAADAAAAAAAAAAIAAAAB/AAAAIQAMgA6ADoAOgBDADoAXABQAGUAcgBzAG8AbgBhAGwAXABFAHMAYwB1AGUAbABhAFwATQBpAGMAcgBvAGMAbwBtAHAAdQB0AGEAZABvAHIAYQBzAFwAbQBpAGMAcgBvAHMAXABQAHIAYQBjAHQAaQBjAGEAXwAxAFwAbQBhAGkAbgAuAGMBAP////8AAfwAAACQADMAOgA6ADoAQwA6AFwAUABlAHIAcwBvAG4AYQBsAFwARQBzAGMAdQBlAGwAYQBcAE0AaQBjAHIAbwBjAG8AbQBwAHUAdABhAGQAbwByAGEAcwBcAG0AaQBjAHIAbwBzAFwAUAByAGEAYwB0AGkAYwBhAF8AMQBcAHAAcgBhAGMAdABpAGMAYQBfADEALgBjAAD/////AAD8AAAAkAA0ADoAOgA6AEMAOgBcAFAAZQByAHMAbwBuAGEAbABcAEUAcwBjAHUAZQBsAGEAXABNAGkAYwByAG8AYwBvAG0AcAB1AHQAYQBkAG8AcgBhAHMAXABtAGkAYwByAG8AcwBcAFAAcgBhAGMAdABpAGMAYQBfADEAXABwAHIAYQBjAHQAaQBjAGEAXwAxAC4AaAAA/////wAA
 FILEHIST: 9
 \Toshiba\Code\Accurev\OS4690.Big_Bang.merge-all\vx\src\device\daemon\DaemonInstanceMcelog.hpp
 \Toshiba\Code\Accurev\OS4690.Big_Bang.merge-all\vx\src\device\daemon\DaemonManager.cpp
@@ -38,37 +38,22 @@ FILEHIST: 9
 ..\practica_1.c
 ..\main.c
 TBCLASS: 0 0
-DEBUG: 0 0 2 0 3 0 gdb
-00main..\main.c4810x0040144b0
-00test_wfnOccurrence..\main.c38010x004020b60
+DEBUG: 0 0 1 0 3 0 gdb
+00test_wfnSprintf..\main.c46610x004026520
 printf
 strcpy
 std::*
-DEBUG2: 2
-00main..\main.c4810x0040144b055
-test_vfnSort,
-test_wfnSprintf};
+DEBUG2: 1
+00test_wfnSprintf..\main.c46610x00402652044
+args[2]=&number;
+args[3]=NULL;
+args[4]=NULL;
+exp_len=42;
+len=wfnSprintf(out_test3,fmt_test3,args);
+ret=check_test("wfnSprintf()",5,(void*)out_test3,(void*)exp_test3,sizeof(unsignedchar)*len);
+ret=check_test("wfnSprintf()-len",6,(void*)&len,(void*)&exp_len,sizeof(unsignedshort));
 
-intmain(void)
-{
-run_unit_tests();
-return0;
 }
-
-shortcheck_test(constchar*functionName,
-shorttest_number,
-00test_wfnOccurrence..\main.c38010x004020b6055
-expected=1;
-res=wfnOccurrence('b',test,7);
-ret=check_test("wfnOccurrence()",2,(void*)&res,(void*)&expected,sizeof(unsignedshort));
-
-////////////////Thirdtest////////////////////
-expected=0;
-res=wfnOccurrence('d',test,7);
-ret=check_test("wfnOccurrence()",3,(void*)&res,(void*)&expected,sizeof(unsignedshort));
-}
-
-voidtest_vfnSort(void)
 [TreeExpansion2]
 +@ vs_practica1.vpj
 scroll:0
