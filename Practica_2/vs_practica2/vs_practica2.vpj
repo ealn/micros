@@ -203,14 +203,13 @@
             <F N="../main.c"/>
             <F N="../practica_2.c"/>
             <F N="../stack.c"/>
-            <F N="../unit_test.c"/>
         </Folder>
         <Folder
             Name="Header Files"
             Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
-            <F N="../defines.h"/>
             <F N="../heap.h"/>
             <F N="../practica_2.h"/>
+            <F N="../stack.h"/>
         </Folder>
         <Folder
             Name="Resource Files"

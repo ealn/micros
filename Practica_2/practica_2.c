@@ -1,5 +1,5 @@
 /***********************************************************************/
-/**************** Practica #1 Arq. de Microcomputadoras ****************/
+/**************** Practica #2 Arq. de Microcomputadoras ****************/
 /***********************************************************************/
 /**                                                                   **/
 /** Autor: Efrain Adrian Luna Nevarez                                 **/
@@ -8,537 +8,294 @@
 /**                                                                   **/
 /***********************************************************************/
 
-#include "practica_1.h"
+#include "practica_2.h"
+#include "heap.h"
+#include "stack.h"
+
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// HEAP MEMORY /////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 /**
- Descripcion: Copia los datos del bloque apuntado por bpSource
- al bloque apuntado por bpDest
+ Descripcion: regresa un apuntador a la posición en memoria 
+ reservada para el bloque de tamaño wSize solicitado Si no hay 
+ memoria, se regresa un apuntador null 
 **/
-void vfnMemCpy(unsigned char * bpSource, 
-               unsigned char * bpDest, 
-               unsigned short  wSize)
+void* vpfnMalloc(unsigned short wSize)
 {
-    if (bpSource != NULL
-        && bpDest != NULL)
-    {
-        while (wSize > 0) 
-        {
-            *bpDest = *bpSource;
-
-            bpDest++;
-            bpSource++;
-            wSize--;
-        }
-    }
+    return memAlloc(wSize);
 }
 
 /**
- Descripcion: Rellena el bloque apuntado por bpDest con el dato 
- indicado por bByteToFill 
+ Descripcion: libera el espacio de memoria apuntado por vpPtr 
 **/
-void vfnMemSet(unsigned char * bpDest, 
-               unsigned char   bByteToFill, 
-               unsigned short  wSize)
+void vfnFree( void* vpPtr)
 {
-    if (bpDest != NULL)
-    {
-        while (wSize > 0) 
-        {
-            *bpDest = bByteToFill;
-
-            bpDest++;
-            wSize--;
-        }
-    }
+    memFree(vpPtr);
 }
 
 /**
- Descripcion: Devuelve el número sin signo mayor encontrado en 
- el bloque de memoria apuntado por bpDest 
+ Descripcion: Se cambia de posición el buffer apuntado por vpPtr
+ para modificar el tamaño al especificado por wSize Si no hay
+ espacio para el nuevo buffer, se regresa el apuntador inicial
 **/
-unsigned char bfnFindMax(unsigned char * bpDest, 
-                         unsigned short  wSize) 
+void* realloc (void* vpPtr, unsigned short wSize)
 {
-    unsigned char max = 0;
+    void * newMemPtr = NULL;
 
-    if (bpDest != NULL)
+    newMemPtr = memAlloc(wSize);
+
+    if (newMemPtr != NULL)
     {
-        if (wSize > 0) 
+        memFree(vpPtr);
+    }
+    else
+    {
+        newMemPtr = vpPtr;
+    }
+
+    return newMemPtr;
+}
+
+/**
+ Descripcion: regresa un apuntador de a un buffer lleno de 0 de 
+ tamaño wSize Si no hay espacio para crear el buffer, regresa un 
+ apuntador null 
+**/
+void* calloc (unsigned short wSize)
+{
+    void * memPtr = memAlloc(wSize);
+    unsigned short i = 0;
+
+    if (memPtr != NULL)
+    {
+        //clean memory
+        while (i < wSize)
         {
-            //get the first element
-            max = *bpDest;
-            bpDest++; 
-            wSize--;
-
-            while (wSize > 0)
-            {
-                if (*bpDest > max)
-                {
-                    max = *bpDest;
-                }
-
-                bpDest++;
-                wSize--; 
-            }
+            *(((unsigned char *)memPtr) + i) = 0;
+            i++;
         }
     }
 
-    return max;
+    return memPtr;
 }
 
-/** 
- Descripcion: Devuelve el número sin signo menor encontrado en el 
- bloque de memoria apuntado por bpDest
+/////////////////////////////////////////////////////////////////////////
+////////////////////////////// QUEUE ////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+/**
+ Descripcion: Inicializa los apuntadores, contadores, etc de 
+ manejo del Queue a sus valores iniciales 
 **/
-unsigned char bfnFindMin(unsigned char* bpDest, unsigned short wSize)
+void vfnQueueInit(void)
 {
-    unsigned char min = 0;
 
-    if (bpDest != NULL)
-    {
-        if (wSize > 0) 
-        {
-            //get the first element
-            min = *bpDest;
-            bpDest++; 
-            wSize--;
-
-            while (wSize > 0)
-            {
-                if (*bpDest < min)
-                {
-                    min = *bpDest;
-                }
-
-                bpDest++;
-                wSize--; 
-            }
-        }
-    }
-
-    return min;
 }
 
 /**
- Descripcion: Compara las cadenas apuntadas por bpSource y bpDest, 
- devolviendo un 1 si las cadenas son iguales o un 0 si son distintas 
+ Descripcion: mete el total de wSize datos apuntados por cpData 
+ en el Queue y regresa la cantidad de datos que se pudieron 
+ ingresar. Si el queue está lleno, entonces se regresa 0. Si 
+ solo se puede meter una parte, entonces se regresa la cantidad 
+ que si entro. 
 **/
-unsigned char bfnStrCmp(unsigned char * bpSource, 
-                        unsigned char * bpDest, 
-                        unsigned short  wSize)
+unsigned char bfnEnqueue(char* cpData, unsigned short wSize)
 {
-    unsigned char ret = 1;
 
-    if (bpSource != NULL
-        && bpDest != NULL)
-    {
-        while (wSize > 0) 
-        {
-            if (*bpSource != *bpDest)
-            {
-                ret = 0;
-                break;
-            }
-
-            bpSource++;
-            bpDest++;
-            wSize--; 
-        }
-    }
-
-    return ret;
 }
 
 /**
- Descripcion: Entrega la dirección donde se encuentra el valor 
- bCharToFind en la cadena bpString. En caso de no encontrar datos, 
- regresa un apuntador a NULL.
+ Descripcion: extrae a cpData la cantidad de datos indicadas por 
+ wSize del Queue. Se regresa la cantidad de datos extraidos. Si 
+ el queue está vacio, se regresa 0 
 **/
-unsigned char* bpfnByteAddress(unsigned char* bpString, 
-                               unsigned char  bCharToFind, 
-                               unsigned short wSize) 
+unsigned char bfnDequeue(char* cpData, unsigned short wSize)
 {
-    unsigned char * address = NULL;
 
-    if (bpString != NULL)
-    {
-        while (wSize > 0) 
-        {
-            if (*bpString == bCharToFind)
-            {
-                address = bpString;
-                break;
-            }
+}
 
-            bpString++;
-            wSize--; 
-        }
-    }
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// STACK MEMORY ////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
-    return address;
+/**
+ Descripcion: inicializa los apuntadores, contadores, etc de 
+ manejo del Stack a sus valores iniciales
+**/
+void vfnStackInit(void)
+{
+    stackInit();
 }
 
 /**
- Descripcion: Devuelve el tamaño de la cadena terminada en 0 apuntada 
- por bpString. 
+ Descripcion: mete el total de wSize datos apuntados por cpData 
+ en el Stack y regresa la cantidad de datos que se pudieron 
+ ingresar. Si el Stack está lleno, entonces regresa 0. Si solo 
+ se puede meter una parte, entonces regresa la cantidad de datos 
+ que si entro 
 **/
-unsigned short wfnStrLen (unsigned char* bpString) 
+unsigned char bfnStackPush(char* cpData, unsigned short wSize)
 {
-    unsigned short len = 0;
-
-    if (bpString != NULL)
-    {
-        while (*bpString != '\0') 
-        {
-            bpString++;
-            len++;
-        }
-    }
-
-    return len;
+    return stackPush(cpData, wSize);
 }
 
 /**
- Descripcion: Devuelve un numero de 16 bits por medio de un
- generador de números pseudo aleatorio basado en la semilla
- recibida en wSeed. Se utilizo el algoritmo de Fibonacci en
- registros de corrimiento con retroalimentación lineal (LFSR)
+ Descripcion: extrae a cpData la cantidad de datos indicada por 
+ wSize del Stack. Se regresa la cantidad de datos extraidos. Si 
+ el Stack está vacio, se regresa 0. 
 **/
-unsigned short wfnRand(unsigned short wSeed)
+unsigned char bfnStackPop(char* cpData, unsigned short wSize)
 {
-    unsigned short lfsr;
-    unsigned short bit;
+    return stackPop(cpData, wSize);
+}
 
-    if (wSeed != 0)
-    {
-        lfsr = wSeed;
-    } 
-    else 
-    {
-        lfsr = 1;
-    }
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// GENERAL UTILS ///////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
-    /* Must be 16bit to allow bit<<15 later in the code */
-    do
-    {
-        /* taps: 16 14 13 11; feedback polynomial: x^16 + x^14 + x^13 + x^11 + 1 */
-        bit  = ((lfsr >> 0) ^ (lfsr >> 2) ^ (lfsr >> 3) ^ (lfsr >> 5) ) & 1;
-        lfsr =  (lfsr >> 1) | (bit << 15);
-    } while (lfsr == wSeed);
+/**
+ Descripcion: Recibe en cpCmdList un apuntador a la lista de 
+ comandos válidos y en cpCmd el comando a verificar. Si el 
+ comando a verificar se encuentra en la lista de comandos 
+ válidos, se regresa el índice correspondiente a la posición de 
+ la lista en la que se encontró el comando. 
+**/
+unsigned char bfnCmdLine(char* cpCmd, char* cpCmdList)
+{
 
-    return lfsr;
 }
 
 /**
- Descripcion:  Devuelve el número de 8 bits que resulta de realizar 
- un xor entre todos los datos contenidos en el espacio de memoria 
- apuntado por bpSrc con tamaño especificado por wSize
+ Descripcion: regresa la cantidad mínima de bits necesarios para 
+ representar el numero recibido en dwNum 
 **/
-unsigned char bfnLRC(unsigned char * bpSrc, unsigned short wSize)
+unsigned char bfnLog2 (unsigned long dwNum)
 {
-    unsigned char ret = 0;
 
-    if (bpSrc != NULL)
-    {
-        if (wSize > 0) 
-        {
-            //get first element
-            ret = *bpSrc;
-            bpSrc++;
-            wSize--;
+}
 
-            while (wSize > 0) 
-            {
-                ret ^= *bpSrc;
-                bpSrc++;
-                wSize--;
-            }
-        }
-    }
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// DATA CONVERSION /////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
-    return ret;
+/**
+ Descripcion: regresa el numero de 32 bits sin signo que resulta 
+ de convertir el numero representado en la cadena terminada en 0 
+ apuntada por cpPtr Si se encuentra un carácter invalido, 
+ entonces se regresa 0 
+**/
+unsigned long dwAToUL (char* cpPtr)
+{
+
 }
 
 /**
- Descripcion: Devuelve el número de 16 bits que representa la cantidad 
- de veces que se repite el elemento bSymbol en el bloque indicado por
- bpSrc de tamaño wSize
+ Descripcion: regresa el numero de 16 bits sin signo que resulta 
+ de convertir el numero representado en la cadena terminada en 0 
+ apuntada por cpPtr Si se encuentra un carácter invalido, 
+ entonces se regresa 0 
 **/
-unsigned short wfnOccurrence(unsigned char  bSymbol, 
-                             unsigned char* bpSrc, 
-                             unsigned short wSize)
+unsigned short wAToW (char* cpPtr)
 {
-    unsigned short ret = 0;
 
-    if (bpSrc != NULL)
-    {
-        while (wSize > 0) 
-        {
-            if (bSymbol == *bpSrc)
-            {
-                ret++;
-            }
-
-            bpSrc++;
-            wSize--; 
-        }
-    }
-
-    return ret;
 }
 
 /**
- Descripcion: Ordena de menor a mayor, en el mismo sitio, los datos 
- contenidos en el buffer apuntado por bpString. 
-**/
-void vfnSort (unsigned char* bpString, unsigned short wStringSize)
+ Descripcion: regresa el numero de 8 bits sin signo que 
+ resulta de convertir el numero representado en la cadena 
+ terminada en 0 apuntada por cpPtr Si se encuentra un carácter 
+ invalido, entonces se regresa 0 
+ **/
+unsigned char bAtoB(char* cpPtr)
 {
-    unsigned char temp;
-    unsigned short i;
-    unsigned short j;
 
-    if (bpString != NULL)
-    {
-        //bubble sort
-        for (i = 0; i < wStringSize -1; i++)
-        {
-            for (j = 0; j < wStringSize - i - 1; j++)
-            {
-                if (*(bpString + j) > *(bpString + j + 1))
-                {
-                    //swap
-                    temp = *(bpString + j);
-                    *(bpString + j) = *(bpString + j + 1);
-                    *(bpString + j + 1) = temp;
-                }
-            }
-        }
-    }
 }
 
 /**
-Descripcion: Invierte los caracteres de un string
-**/
-static void vfnReverseStr(unsigned char *str)
+ Descripcion: regresa el total de caracteres agregados a la 
+ cadena apuntada por cpPtr resultantes de convertir bData a su 
+ representación en dígitos ASCII 
+ **/
+unsigned char bfnBToA(unsigned char bData, char* cpPtr)
 {
-    /* get range */
-    unsigned char * start = str;
-    unsigned char * end = start + wfnStrLen(str) - 1; /* -1 for \0 */
-    unsigned char temp;
 
-    /* reverse */
-    while (end > start)
-    {
-        /* swap */
-        temp = *start;
-        *start = *end;
-        *end = temp;
-
-        /* move */
-        ++start;
-        --end;
-    }
 }
 
 /**
-Descripcion: convierte un entero de 16 bits a ascii de acuerdo a
-la base enviada 
-**/
-static unsigned short wfnConvertIntToAsc(unsigned short n, unsigned char * str, unsigned short base)
+ Descripcion: regresa el total de caracteres agregados a la 
+ cadena apuntada por cpPtr resultantes de convertir wData a su 
+ representación en dígitos ASCII. 
+ **/
+unsigned char bfnWToA(unsigned short wData, char* cpPtr)
 {
-    unsigned char res = 0;
-    unsigned char* p = str;
-    unsigned short len = 0;
-    unsigned char hex[] = "0123456789ABCDEF";
 
-    if (str != NULL)
-    {
-        while (n > 0) 
-        {
-            res = n % base;
-
-            if (base == 16) //Hex
-            {
-                *p = hex[res];
-            }
-            else
-            {
-                *p = res + '0'; 
-            }
-
-            n -= res;
-            n /= base;
-            p++;
-        }
-
-        *p = '\0';
-        vfnReverseStr(str);
-        len = wfnStrLen(str);
-    }
-
-    return len;
 }
 
 /**
- Descripcion : Formatea en la cadena string los datos siguiendo
- el formato. Devuelve el tamaño de la cadena generada
-    %c – imprime el carácter
-    %d – imprime en 3 dígitos el número de 8 bits
-    %s – imprime como cadena los datos actuales
-    %x – imprime en 2 dígitos el número hexadecimal
-    %b – imprime 8 dígitos representando el binario de 8 bits
- 
-  Las opciones de %d, %d y %b deben soportar la supresión de los
-  ceros precedentes a menos que se utilize %0b, %0d o %0x donde
-  se especifica que se dejaran los ceros iniciales.
-**/
-unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
+ Descripcion: regresa el total de caracteres agregados a la 
+ cadena apuntada por cpPtr resultantes de convertir dwData a su 
+ representación en dígitos ASCII 
+ **/
+unsigned char bfnDwToA(unsigned long dwData, char* cpPtr)
 {
-    char         * str = string;       //copy the pointer to the first position
-    unsigned short index_arg = 0;
-    unsigned char  c_value = 0;
-    unsigned short int_value = 0;
-    unsigned char *str_value = NULL;
-    unsigned char  strConv[32];
-    unsigned short len = 0;
-    unsigned char  add_zero = 0;
 
-    if (string != NULL
-        && fmt != NULL)
-    {
-        while (*fmt != '\0') 
-        {
-            //if there is a format character
-            if (args != NULL
-                && (*fmt == '%'
-                    || add_zero))
-            {
-                //increase the pointer
-                fmt++;
-
-                switch (*fmt)
-                {
-                    case 'c':
-                        c_value = *((unsigned char*)(args[index_arg]));
-                        //insert char
-                        *str = c_value;
-
-                        str++;
-                        index_arg++;
-                        break;
-                    case 'd':
-                        int_value = *((unsigned short*)(args[index_arg]));
-                        //convert int to str
-                        len = wfnConvertIntToAsc(int_value, strConv, 10);
-
-                        if (len > 0)
-                        {
-                            if (add_zero)
-                            {
-                                //fill with 0
-                                vfnMemSet(str, '0', 5 - len);
-                                str += (5 - len);
-                            }
-
-                            //insert str
-                            vfnMemCpy(strConv, str, len);
-                            str += len;
-                        }
-                        index_arg++;
-                        add_zero = 0;
-                        break;
-                    case 's':
-                        str_value = (unsigned char*)(args[index_arg]);
-                        len = wfnStrLen(str_value);
-
-                        if (len > 0)
-                        {
-                            //insert str
-                            vfnMemCpy(str_value, str, len);
-                            str += len;
-                        }
-
-                        index_arg++;
-                        break; 
-                    case 'x':
-                        int_value = *((unsigned short*)(args[index_arg]));
-                        //convert int to hex
-                        len = wfnConvertIntToAsc(int_value, strConv, 16);
-
-                        if (len > 0)
-                        {
-                            if (add_zero)
-                            {
-                                //fill with 0
-                                vfnMemSet(str, '0', 4 - len);
-                                str += (4 - len);
-                            }
-
-                            //insert str
-                            vfnMemCpy(strConv, str, len);
-                            str += len;
-                        }
-                        index_arg++;
-                        add_zero = 0;
-                        break;
-                    case 'b':
-                        int_value = *((unsigned short*)(args[index_arg]));
-                        //convert int to bin
-                        len = wfnConvertIntToAsc(int_value, strConv, 2);
-
-                        if (len > 0)
-                        {
-                            if (add_zero)
-                            {
-                                //fill with 0
-                                vfnMemSet(str, '0', 16 - len);
-                                str += (16 - len);
-                            }
-
-                            //insert str
-                            vfnMemCpy(strConv, str, len);
-                            str += len;
-                        }
-                        index_arg++;
-                        add_zero = 0;
-                        break;
-                    case '0':
-                        if (*(fmt + 1) == 'd'
-                            || *(fmt + 1) == 'x'
-                            || *(fmt + 1) == 'b')
-                        {
-                            fmt--;
-                            add_zero = 1;
-                        }
-                        else
-                        {
-                            //just copy this charater to the string
-                            *str = *fmt;
-                            str++;
-                        }
-                        break; 
-                    default:
-                        //invalid format character
-                        //just copy this charater to the string
-                        *str = *fmt;
-                        str++;
-                        break;
-                }
-            }
-            else
-            {
-                //just copy the info
-                *str = *fmt;
-                str++;
-            }
-
-            fmt++; 
-        }
-
-        len = wfnStrLen(string);
-    }
-
-    return len;
 }
 
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// DATA MANAGEMENT /////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
+/**
+ Descripcion: regresa el numero de 8 bits resultante de reflejar 
+ cada bit de bData 
+ **/
+unsigned char bfnByteFlip(unsigned char bData)
+{
+
+}
+
+/**
+ Descripcion: regresa el numero de 16 bits resultante de reflejar 
+ cada bit de wData 
+ **/
+unsigned short wfnWordFlip(unsigned short wData)
+{
+
+}
+
+/**
+ Descripcion: regresa el numero de 32 bits resultante de 
+ reflejar cada bit de dwData 
+ **/
+unsigned long dwfnDWordFlip(unsigned long dwData)
+{
+
+}
+
+/**
+ Descripcion: regresa el numero de 8 bits resultante de 
+ intercambiar los nibbles de bData 
+ **/
+unsigned char bfnNibbleSwap(unsigned char bData)
+{
+
+}
+
+/**
+ Descripcion: regresa el numero de 16 bits resultante de 
+ intercambiar los bytes de wData 
+ **/
+unsigned short wfnByteSwap(unsigned short wData)
+{
+
+}
+
+/**
+ Descripcion: regresa el numero de 32 bits resultante 
+ de intercambiar los words de dwData
+ **/
+unsigned long dwfnWordSwap(unsigned long dwData)
+{
+
+}

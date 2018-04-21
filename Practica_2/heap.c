@@ -1,28 +1,40 @@
+/***********************************************************************/
+/**************** Practica #2 Arq. de Microcomputadoras ****************/
+/***********************************************************************/
+/**                                                                   **/
+/** Autor: Efrain Adrian Luna Nevarez                                 **/
+/** Fecha: 18/03/2018                                                 **/
+/** Heap Source File                                                  **/
+/**                                                                   **/
+/***********************************************************************/
 
+#include "heap.h"
 
 #define   BLOCKS_PER_CTRL_B      4
-#define   NUMBER_BLOCKS          1024                                  //-> 1kb
-#define   NUMBER_CONTROL_BLOCKS  NUMBER_BLOCKS/BLOCKS_PER_CTRL_B        //-> 265b
+#define   NUMBER_BLOCKS          256                                    //-> 256b
+#define   NUMBER_CONTROL_BLOCKS  NUMBER_BLOCKS/BLOCKS_PER_CTRL_B        //-> 64b
 #define   BLOCK_SIZE             sizeof(unsigned char)
-#define   NULL                   (void *)0
+#define   BITS_PER_BLOCK         8*BLOCK_SIZE
+#define   STEP_SIZE              BITS_PER_BLOCK/BLOCKS_PER_CTRL_B    //byte/BLOCKS_PER_CTRL_B
 
 //Flags control
 #define   MEM_USED            0x01
 #define   MEM_CONTINUED       0x02
 
-unsigned char g_mem_init = 0;
+unsigned char g_memInit = 0;
+unsigned short g_numBytesAllocated = 0;
 
 //Reserve space for the heap and the memory control
-unsigned char memory[NUMBER_BLOCKS];
-unsigned char memoryControl[NUMBER_BLOCKS];
+unsigned char g_memory[NUMBER_BLOCKS];
+unsigned char g_memoryControl[NUMBER_BLOCKS];
 
 //Memory
-unsigned char * pMemStart = memory;                //Start at the beginning of Memory
-unsigned char * pMemEnd   = memory + NUMBER_BLOCKS;
+unsigned char * g_pMemStart = g_memory;                //Start at the beginning of Memory
+unsigned char * g_pMemEnd   = g_memory + (NUMBER_BLOCKS - 1);
 
 //Memory control
-unsigned char * pMemCtrStart = memoryControl;
-unsigned char * pMemCtrEnd = memoryControl + NUMBER_CONTROL_BLOCKS;
+unsigned char * g_pMemCtrStart = g_memoryControl;
+unsigned char * g_pMemCtrEnd = g_memoryControl + (NUMBER_CONTROL_BLOCKS - 1);
 
 static void setMemBlockUsed(unsigned char *pCtrBlock, unsigned char offset, unsigned char value)
 {
@@ -30,11 +42,13 @@ static void setMemBlockUsed(unsigned char *pCtrBlock, unsigned char offset, unsi
     {
         if (value == 1)
         {
-            *pCtrBlock |= (MEM_USED << offset); 
+            g_numBytesAllocated++;
+            *pCtrBlock |= (MEM_USED << STEP_SIZE*offset); 
         }
         else
         {
-            *pCtrBlock &= ~(MEM_USED << offset); 
+            g_numBytesAllocated--;
+            *pCtrBlock &= ~(MEM_USED << STEP_SIZE*offset); 
         }
     }
 }
@@ -42,7 +56,7 @@ static void setMemBlockUsed(unsigned char *pCtrBlock, unsigned char offset, unsi
 static unsigned char isMemBlockUsed(unsigned char *pCtrBlock, unsigned char offset)
 {
     return (pCtrBlock != NULL
-            && ((*pCtrBlock) & (MEM_USED << offset)));
+            && ((*pCtrBlock) & (MEM_USED << STEP_SIZE*offset)));
 }
 
 static void setMemBlockContinued(unsigned char *pCtrBlock, unsigned char offset, unsigned char value)
@@ -51,11 +65,11 @@ static void setMemBlockContinued(unsigned char *pCtrBlock, unsigned char offset,
     {
         if (value == 1)
         {
-            *pCtrBlock |= (MEM_CONTINUED << offset); 
+            *pCtrBlock |= (MEM_CONTINUED << STEP_SIZE*offset); 
         }
         else
         {
-            *pCtrBlock &= ~(MEM_CONTINUED << offset); 
+            *pCtrBlock &= ~(MEM_CONTINUED << STEP_SIZE*offset);
         }
     }
 }
@@ -63,7 +77,7 @@ static void setMemBlockContinued(unsigned char *pCtrBlock, unsigned char offset,
 static unsigned char isMemBlockContinued(unsigned char *pCtrBlock, unsigned char offset)
 {
     return (pCtrBlock != NULL
-            && ((*pCtrBlock) & (MEM_CONTINUED << offset)));
+            && ((*pCtrBlock) & (MEM_CONTINUED << STEP_SIZE*offset)));
 }
 
 static void cleanBlock(unsigned char *pBlock)
@@ -78,42 +92,42 @@ static void cleanControlBlock(unsigned char *pBlock, unsigned char offset)
 {
     if (pBlock != NULL)
     {
-        *pBlock &= ~(MEM_USED << offset);
-        *pBlock &= ~(MEM_CONTINUED << offset);
+        setMemBlockUsed(pBlock, offset, 0);
+        setMemBlockContinued(pBlock, offset, 0);
     }
 }
 
 static void initMemory(void)
 {
-    unsigned char * pMem = pMemStart;
+    unsigned char * pMem = g_pMemStart;
 
     //Clean memory
-    while (pMem != pMemEnd)
+    while (pMem != g_pMemEnd)
     {
         cleanBlock(pMem);
         pMem++;
     }
 
-    cleanBlock(pMemEnd);
+    cleanBlock(g_pMemEnd);
 
     //Clean memory control
-    pMem = pMemCtrStart;
+    pMem = g_pMemCtrStart;
 
-    while (pMem != pMemCtrEnd)
+    while (pMem != g_pMemCtrEnd)
     {
         cleanBlock(pMem);
         pMem++;
     }
 
-    cleanBlock(pMemCtrEnd);
+    cleanBlock(g_pMemCtrEnd);
 }
 
 static unsigned short getMemElementFromMemCtr(unsigned char * pMemCtr, unsigned char offset)
 {
     unsigned short ret = 0;
-    unsigned char * start = pMemCtrStart;
+    unsigned char * start = g_pMemCtrStart;
     
-    while (start != pMemCtrEnd) 
+    while (start != g_pMemCtrEnd) 
     {
         if (start == pMemCtr)
         {
@@ -125,7 +139,7 @@ static unsigned short getMemElementFromMemCtr(unsigned char * pMemCtr, unsigned 
     }
 
     ret *= BLOCKS_PER_CTRL_B;
-    ret += offset
+    ret += offset;
 
     return ret;
 }
@@ -133,9 +147,9 @@ static unsigned short getMemElementFromMemCtr(unsigned char * pMemCtr, unsigned 
 static unsigned short getMemCtrOffsetFromMem(unsigned char * pMem, unsigned char *offset)
 {
     unsigned short ret = 0;
-    unsigned char * start = pMemStart;
+    unsigned char * start = g_pMemStart;
 
-    while (start != pMemEnd) 
+    while (start != g_pMemEnd) 
     {
         if (start == pMem)
         {
@@ -146,7 +160,7 @@ static unsigned short getMemCtrOffsetFromMem(unsigned char * pMem, unsigned char
         start++;
     }
     
-    if (*offset != NULL)
+    if (offset != NULL)
     {
         *offset = ret%BLOCKS_PER_CTRL_B;
         ret = (ret - *offset)/BLOCKS_PER_CTRL_B;
@@ -159,15 +173,42 @@ static unsigned short getMemCtrOffsetFromMem(unsigned char * pMem, unsigned char
     return ret;
 }
 
+static unsigned char containsFreeBlocks(unsigned char * ctrlBlock)
+{
+    unsigned char ret = 0;
+    unsigned char offset = 0;
+
+    if (ctrlBlock != NULL)
+    {
+        while (offset < BLOCKS_PER_CTRL_B)
+        {
+            if (!isMemBlockUsed(ctrlBlock, offset))
+            {
+                ret = 1;
+                break;
+            }
+
+            offset++; 
+        }
+    }
+
+    return ret;
+}
+
 static unsigned short getNumberOfFreeBlocks(unsigned char * start)
 {
     unsigned short number = 0;
     unsigned char  offset = 0;
 
     //search all continues free blocks
-    while (start != pMemCtrEnd)
+    while (start != g_pMemCtrEnd)
     {
         offset = 0;
+
+        if (!containsFreeBlocks(start))
+        {
+            break;
+        }
 
         while (offset < BLOCKS_PER_CTRL_B)
         {
@@ -183,7 +224,7 @@ static unsigned short getNumberOfFreeBlocks(unsigned char * start)
     }
 
     //Search in last control block
-    if (start == pMemCtrEnd)
+    if (start == g_pMemCtrEnd)
     {
         offset = 0;
 
@@ -223,13 +264,13 @@ static unsigned char getFirstOffsetFromFreeBlock(unsigned char * pMemCtr)
 
 static unsigned char * getEmptyMemCtrBlock(unsigned short numberOfBlocks, unsigned char *offset)
 {
-    unsigned char * start = pMemCtrStart;
+    unsigned char * start = g_pMemCtrStart;
     unsigned char * pEmpty = NULL;
 
     //search in all enties
-    while (start != pMemCtrEnd)
+    while (start != g_pMemCtrEnd)
     {
-        if (getNumberOfFreeBlocks(start) == numberOfBlocks)
+        if (getNumberOfFreeBlocks(start) >= numberOfBlocks)
         {
             pEmpty = start;
             break;
@@ -239,9 +280,9 @@ static unsigned char * getEmptyMemCtrBlock(unsigned short numberOfBlocks, unsign
     }
 
     //finaly search in the last entrie
-    if (start == pMemCtrEnd
+    if (start == g_pMemCtrEnd
         && pEmpty == NULL
-        && getNumberOfFreeBlocks(start) == numberOfBlocks)
+        && getNumberOfFreeBlocks(start) >= numberOfBlocks)
     {
         pEmpty = start;
     }
@@ -307,43 +348,20 @@ static void free(unsigned char * pCtrBlock, unsigned char offset)
             {
                 while (isMemBlockContinued(pCtrBlock, offset))
                 {
+                    cleanControlBlock(pCtrBlock, offset); 
+                    offset++;
+
                     if (offset == BLOCKS_PER_CTRL_B)
                     {
                         pCtrBlock++;
                         offset = 0; 
                     }
-
-                    cleanControlBlock(pCtrBlock, offset); 
-                    offset++;
                 }
 
                 cleanControlBlock(pCtrBlock, offset); 
             }
         }
     }
-    /*
-    if (pCtrBlock != NULL
-        && isMemBlockUsed(pCtrBlock))
-    {
-        if (!isMemBlockContinued(pCtrBlock))
-        {
-            cleanBlock(pCtrBlock);
-        }
-        else
-        {
-            while (isMemBlockContinued(pCtrBlock)) 
-            {
-                cleanBlock(pCtrBlock);
-                pCtrBlock++;
-            }
-
-            //clean last entry
-            if (isMemBlockContinuation(pCtrBlock))
-            {
-                cleanBlock(pCtrBlock);
-            }
-        }
-    }*/
 }
 
 static void * getMemPointerFromMemCtrBlock(unsigned char * pCtrBlock, unsigned char offset)
@@ -355,7 +373,7 @@ static void * getMemPointerFromMemCtrBlock(unsigned char * pCtrBlock, unsigned c
 
     if (element >= 0 && element <= NUMBER_BLOCKS)
     {
-        mem = pMemStart + element;
+        mem = g_pMemStart + element;
     }
 
     return mem;
@@ -370,7 +388,7 @@ static unsigned char * getMemCtrPointerFromMem(void * pMem, unsigned char *offse
 
     if (element >= 0 && element <= NUMBER_BLOCKS)
     {
-        pCtrBlock = pMemCtrStart + element;
+        pCtrBlock = g_pMemCtrStart + element;
     }
 
     return pCtrBlock;
@@ -387,10 +405,10 @@ void * memAlloc(unsigned short size)
     unsigned short  numberBlocks = 0;
     unsigned char   offset = 0;
     
-    if (!g_mem_init)
+    if (!g_memInit)
     {
         initMemory();
-        g_mem_init = 1;
+        g_memInit = 1;
     }
 
     numberBlocks = (unsigned short)(size / BLOCK_SIZE); 

@@ -1,5 +1,5 @@
 /***********************************************************************/
-/**************** Practica #1 Arq. de Microcomputadoras ****************/
+/**************** Practica #2 Arq. de Microcomputadoras ****************/
 /***********************************************************************/
 /**                                                                   **/
 /** Autor: Efrain Adrian Luna Nevarez                                 **/
@@ -8,107 +8,198 @@
 /**                                                                   **/
 /***********************************************************************/
 
-#ifndef _PRACTICA_1_H_
-#define _PRACTICA_1_H_
+#ifndef _PRACTICA_2_H_
+#define _PRACTICA_2_H_
 
-#define NULL  (void *)0
-
-/**
- Descripcion: Copia los datos del bloque apuntado por bpSource
- al bloque apuntado por bpDest
-**/
-void vfnMemCpy(unsigned char * bpSource, 
-               unsigned char * bpDest, 
-               unsigned short  wSize);
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// HEAP MEMORY /////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 /**
- Descripcion: Rellena el bloque apuntado por bpDest con el dato 
- indicado por bByteToFill 
+ Descripcion: regresa un apuntador a la posición en memoria 
+ reservada para el bloque de tamaño wSize solicitado Si no hay 
+ memoria, se regresa un apuntador null 
 **/
-void vfnMemSet(unsigned char * bpDest, 
-               unsigned char   bByteToFill, 
-               unsigned short  wSize);
+void* vpfnMalloc(unsigned short wSize);
 
 /**
- Descripcion: Devuelve el número sin signo mayor encontrado en 
- el bloque de memoria apuntado por bpDest 
+ Descripcion: libera el espacio de memoria apuntado por vpPtr 
 **/
-unsigned char bfnFindMax(unsigned char * bpDest, 
-                         unsigned short  wSize);
-
-/** 
- Descripcion: Devuelve el número sin signo menor encontrado en el 
- bloque de memoria apuntado por bpDest
-**/
-unsigned char bfnFindMin(unsigned char* bpDest, unsigned short wSize);
+void vfnFree( void* vpPtr);
 
 /**
- Descripcion: Compara las cadenas apuntadas por bpSource y bpDest, 
- devolviendo un 1 si las cadenas son iguales o un 0 si son distintas 
+ Descripcion: Se cambia de posición el buffer apuntado por vpPtr
+ para modificar el tamaño al especificado por wSize Si no hay
+ espacio para el nuevo buffer, se regresa el apuntador inicial
 **/
-unsigned char bfnStrCmp(unsigned char * bpSource, 
-                        unsigned char * bpDest, 
-                        unsigned short  wSize);
+void* realloc (void* vpPtr, unsigned short wSize);
 
 /**
- Descripcion: Entrega la dirección donde se encuentra el valor 
- bCharToFind en la cadena bpString. En caso de no encontrar datos, 
- regresa un apuntador a NULL.
+ Descripcion: regresa un apuntador de a un buffer lleno de 0 de 
+ tamaño wSize Si no hay espacio para crear el buffer, regresa un 
+ apuntador null 
 **/
-unsigned char* bpfnByteAddress(unsigned char* bpString, 
-                               unsigned char  bCharToFind, 
-                               unsigned short wSize);
+void* calloc (unsigned short wSize);
+
+/////////////////////////////////////////////////////////////////////////
+////////////////////////////// QUEUE ////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 /**
- Descripcion: Devuelve el tamaño de la cadena terminada en 0 apuntada 
- por bpString. 
+ Descripcion: Inicializa los apuntadores, contadores, etc de 
+ manejo del Queue a sus valores iniciales 
 **/
-unsigned short wfnStrLen (unsigned char* bpString);
+void vfnQueueInit(void);
 
 /**
- Descripcion: Devuelve un numero de 16 bits por medio de un
- generador de números pseudo aleatorio basado en la semilla
- recibida en wSeed. Se utilizo el algoritmo de Fibonacci en
- registros de corrimiento con retroalimentación lineal (LFSR)
+ Descripcion: mete el total de wSize datos apuntados por cpData 
+ en el Queue y regresa la cantidad de datos que se pudieron 
+ ingresar. Si el queue está lleno, entonces se regresa 0. Si 
+ solo se puede meter una parte, entonces se regresa la cantidad 
+ que si entro. 
 **/
-unsigned short wfnRand(unsigned short wSeed);
+unsigned char bfnEnqueue(char* cpData, unsigned short wSize);
 
 /**
- Descripcion:  Devuelve el número de 8 bits que resulta de realizar 
- un xor entre todos los datos contenidos en el espacio de memoria 
- apuntado por bpSrc con tamaño especificado por wSize
+ Descripcion: extrae a cpData la cantidad de datos indicadas por 
+ wSize del Queue. Se regresa la cantidad de datos extraidos. Si 
+ el queue está vacio, se regresa 0 
 **/
-unsigned char bfnLRC(unsigned char * bpSrc, unsigned short wSize);
+unsigned char bfnDequeue(char* cpData, unsigned short wSize);
+
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// STACK MEMORY ////////////////////////////////
+/////////////////////////////////////////////////////////////////////////
 
 /**
- Descripcion: Devuelve el número de 16 bits que representa la cantidad 
- de veces que se repite el elemento bSymbol en el bloque indicado por
- bpSrc de tamaño wSize
+ Descripcion: inicializa los apuntadores, contadores, etc de 
+ manejo del Stack a sus valores iniciales
 **/
-unsigned short wfnOccurrence(unsigned char  bSymbol, 
-                             unsigned char* bpSrc, 
-                             unsigned short wSize);
+void vfnStackInit(void);
 
 /**
- Descripcion: Ordena de menor a mayor, en el mismo sitio, los datos 
- contenidos en el buffer apuntado por bpString. 
+ Descripcion: mete el total de wSize datos apuntados por cpData 
+ en el Stack y regresa la cantidad de datos que se pudieron 
+ ingresar. Si el Stack está lleno, entonces regresa 0. Si solo 
+ se puede meter una parte, entonces regresa la cantidad de datos 
+ que si entro 
 **/
-void vfnSort (unsigned char* bpString, unsigned short wStringSize);
+unsigned char bfnStackPush(char* cpData, unsigned short wSize);
 
 /**
- Descripcion : Formatea en la cadena string los datos siguiendo
- el formato. Devuelve el tamaño de la cadena generada
-    %c – imprime el carácter
-    %d – imprime en 3 dígitos el número de 8 bits
-    %s – imprime como cadena los datos actuales
-    %x – imprime en 2 dígitos el número hexadecimal
-    %b – imprime 8 dígitos representando el binario de 8 bits
- 
-  Las opciones de %d, %d y %b deben soportar la supresión de los
-  ceros precedentes a menos que se utilize %0b, %0d o %0x donde
-  se especifica que se dejaran los ceros iniciales.
+ Descripcion: extrae a cpData la cantidad de datos indicada por 
+ wSize del Stack. Se regresa la cantidad de datos extraidos. Si 
+ el Stack está vacio, se regresa 0. 
 **/
-unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args);
+unsigned char bfnStackPop(char* cpData, unsigned short wSize);
 
-#endif /* ifndef _PRACTICA_1_H_ */
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// GENERAL UTILS ///////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+/**
+ Descripcion: Recibe en cpCmdList un apuntador a la lista de 
+ comandos válidos y en cpCmd el comando a verificar. Si el 
+ comando a verificar se encuentra en la lista de comandos 
+ válidos, se regresa el índice correspondiente a la posición de 
+ la lista en la que se encontró el comando. 
+**/
+unsigned char bfnCmdLine(char* cpCmd, char* cpCmdList);
+
+/**
+ Descripcion: regresa la cantidad mínima de bits necesarios para 
+ representar el numero recibido en dwNum 
+**/
+unsigned char bfnLog2 (unsigned long dwNum);
+
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// DATA CONVERSION /////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+/**
+ Descripcion: regresa el numero de 32 bits sin signo que resulta 
+ de convertir el numero representado en la cadena terminada en 0 
+ apuntada por cpPtr Si se encuentra un carácter invalido, 
+ entonces se regresa 0 
+**/
+unsigned long dwAToUL (char* cpPtr);
+
+/**
+ Descripcion: regresa el numero de 16 bits sin signo que resulta 
+ de convertir el numero representado en la cadena terminada en 0 
+ apuntada por cpPtr Si se encuentra un carácter invalido, 
+ entonces se regresa 0 
+**/
+unsigned short wAToW (char* cpPtr);
+
+/**
+ Descripcion: regresa el numero de 8 bits sin signo que 
+ resulta de convertir el numero representado en la cadena 
+ terminada en 0 apuntada por cpPtr Si se encuentra un carácter 
+ invalido, entonces se regresa 0 
+ **/
+unsigned char bAtoB(char* cpPtr);
+
+/**
+ Descripcion: regresa el total de caracteres agregados a la 
+ cadena apuntada por cpPtr resultantes de convertir bData a su 
+ representación en dígitos ASCII 
+ **/
+unsigned char bfnBToA(unsigned char bData, char* cpPtr);
+
+/**
+ Descripcion: regresa el total de caracteres agregados a la 
+ cadena apuntada por cpPtr resultantes de convertir wData a su 
+ representación en dígitos ASCII. 
+ **/
+unsigned char bfnWToA(unsigned short wData, char* cpPtr);
+
+/**
+ Descripcion: regresa el total de caracteres agregados a la 
+ cadena apuntada por cpPtr resultantes de convertir dwData a su 
+ representación en dígitos ASCII 
+ **/
+unsigned char bfnDwToA(unsigned long dwData, char* cpPtr);
+
+/////////////////////////////////////////////////////////////////////////
+/////////////////////////// DATA MANAGEMENT /////////////////////////////
+/////////////////////////////////////////////////////////////////////////
+
+/**
+ Descripcion: regresa el numero de 8 bits resultante de reflejar 
+ cada bit de bData 
+ **/
+unsigned char bfnByteFlip(unsigned char bData);
+
+/**
+ Descripcion: regresa el numero de 16 bits resultante de reflejar 
+ cada bit de wData 
+ **/
+unsigned short wfnWordFlip(unsigned short wData);
+
+/**
+ Descripcion: regresa el numero de 32 bits resultante de 
+ reflejar cada bit de dwData 
+ **/
+unsigned long dwfnDWordFlip(unsigned long dwData);
+
+/**
+ Descripcion: regresa el numero de 8 bits resultante de 
+ intercambiar los nibbles de bData 
+ **/
+unsigned char bfnNibbleSwap(unsigned char bData);
+
+/**
+ Descripcion: regresa el numero de 16 bits resultante de 
+ intercambiar los bytes de wData 
+ **/
+unsigned short wfnByteSwap(unsigned short wData);
+
+/**
+ Descripcion: regresa el numero de 32 bits resultante 
+ de intercambiar los words de dwData
+ **/
+unsigned long dwfnWordSwap(unsigned long dwData);
+
+#endif /* ifndef _PRACTICA_2_H_ */
 
