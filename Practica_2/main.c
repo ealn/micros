@@ -435,7 +435,40 @@ void test_bfnStackPop(void)
 
 void test_bfnCmdLine(void)
 {
+    char          *cmdList[5];
+    char          cmd[] = "";
+    char          cmd1[] = "command_1";
+    char          cmd2[] = "command_2";
+    char          cmd3[] = "command_3";
+    char          cmd4[] = "command_4";
+    char          cmd6[] = "command_6";
+    unsigned char index = 0;
+    unsigned char exp_index = 0;
+    short         ret = 0;
 
+    cmdList[0] = cmd;
+    cmdList[1] = cmd1;
+    cmdList[2] = cmd2;
+    cmdList[3] = cmd3;
+    cmdList[4] = cmd4;
+
+    ////////////////////////////// First test  ////////////////////////////////
+
+    exp_index = 1;
+    index = bfnCmdLine(cmd1, cmdList);
+    ret = check_test("bfnCmdLine()", 1, (void *)&index, (void *)&exp_index,  sizeof(unsigned char));
+
+    ////////////////////////////// Second test  ////////////////////////////////
+
+    exp_index = 3;
+    index = bfnCmdLine(cmd3, cmdList);
+    ret = check_test("bfnCmdLine()", 2, (void *)&index, (void *)&exp_index,  sizeof(unsigned char));
+
+    ////////////////////////////// Third test  ////////////////////////////////
+
+    exp_index = 0;
+    index = bfnCmdLine(cmd6, cmdList);
+    ret = check_test("bfnCmdLine()", 3, (void *)&index, (void *)&exp_index,  sizeof(unsigned char));
 }
 
 void test_bfnLog2(void)

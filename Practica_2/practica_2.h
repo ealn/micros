@@ -104,7 +104,7 @@ unsigned short bfnStackPop(char* cpData, unsigned short wSize);
  válidos, se regresa el índice correspondiente a la posición de 
  la lista en la que se encontró el comando. 
 **/
-unsigned char bfnCmdLine(char* cpCmd, char* cpCmdList);
+unsigned char bfnCmdLine(char* cpCmd, char** cpCmdList);
 
 /**
  Descripcion: regresa la cantidad mínima de bits necesarios para 

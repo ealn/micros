@@ -72,12 +72,7 @@ void* calloc (unsigned short wSize)
 
     if (memPtr != NULL)
     {
-        //clean memory
-        while (i < wSize)
-        {
-            *(((unsigned char *)memPtr) + i) = 0;
-            i++;
-        }
+        vfnMemSet((unsigned char *)memPtr, 0, wSize);
     }
 
     return memPtr;
@@ -167,6 +162,7 @@ unsigned short bfnStackPop(char* cpData, unsigned short wSize)
 unsigned char bfnCmdLine(char* cpCmd, char** cpCmdList)
 {
     unsigned char index = 0;
+    unsigned char found = 0;
     char * cmd = NULL;
 
     if (cpCmd != NULL
@@ -180,12 +176,18 @@ unsigned char bfnCmdLine(char* cpCmd, char** cpCmdList)
                           (unsigned char*)cmd, 
                           wfnStrLen((unsigned char*)cpCmd)))
             {
+                found = 1;
                 break;
             }
 
             index++;
             cmd = cpCmdList[index];
         }
+    }
+
+    if (!found)
+    {
+        index = 0;
     }
 
     return index;
@@ -197,7 +199,21 @@ unsigned char bfnCmdLine(char* cpCmd, char** cpCmdList)
 **/
 unsigned char bfnLog2 (unsigned long dwNum)
 {
+    unsigned char  numBits = 1;
+    unsigned char  index = 1;
 
+    while (index <= 32)
+    {
+        if (dwNum & (1 << index))
+        {
+            //update with the last 1
+            numBits = index;
+        }
+
+        index++; 
+    }
+
+    return numBits;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -212,7 +228,26 @@ unsigned char bfnLog2 (unsigned long dwNum)
 **/
 unsigned long dwAToUL (char* cpPtr)
 {
+    unsigned long  ret = 0;
+    char          *p = cpPtr;
 
+    while (*p != '\0')
+    {
+        if (*p < '0' || *p > '9')   //check invalid character
+        {
+            ret = 0;
+            break;
+        }
+        else
+        {
+            ret *= 10;
+            ret += *p - '0';
+        }
+
+        p++; 
+    }
+
+    return ret;
 }
 
 /**
@@ -223,7 +258,26 @@ unsigned long dwAToUL (char* cpPtr)
 **/
 unsigned short wAToW (char* cpPtr)
 {
+    unsigned short  ret = 0;
+    char           *p = cpPtr;
 
+    while (*p != '\0')
+    {
+        if (*p < '0' || *p > '9')   //check invalid character
+        {
+            ret = 0;
+            break;
+        }
+        else
+        {
+            ret *= 10;
+            ret += *p - '0';
+        }
+
+        p++; 
+    }
+
+    return ret;
 }
 
 /**
@@ -234,7 +288,26 @@ unsigned short wAToW (char* cpPtr)
  **/
 unsigned char bAtoB(char* cpPtr)
 {
+    unsigned char   ret = 0;
+    char           *p = cpPtr;
 
+    while (*p != '\0')
+    {
+        if (*p < '0' || *p > '9')   //check invalid character
+        {
+            ret = 0;
+            break;
+        }
+        else
+        {
+            ret *= 10;
+            ret += *p - '0';
+        }
+
+        p++; 
+    }
+
+    return ret;
 }
 
 /**
@@ -244,7 +317,9 @@ unsigned char bAtoB(char* cpPtr)
  **/
 unsigned char bfnBToA(unsigned char bData, char* cpPtr)
 {
-
+    return (unsigned char)wfnConvertIntToAsc((unsigned long)bData, 
+                                             (unsigned char*)cpPtr, 
+                                             10);
 }
 
 /**
@@ -254,7 +329,9 @@ unsigned char bfnBToA(unsigned char bData, char* cpPtr)
  **/
 unsigned char bfnWToA(unsigned short wData, char* cpPtr)
 {
-
+    return (unsigned char)wfnConvertIntToAsc((unsigned long)wData, 
+                                             (unsigned char*)cpPtr, 
+                                             10);
 }
 
 /**
@@ -264,7 +341,9 @@ unsigned char bfnWToA(unsigned short wData, char* cpPtr)
  **/
 unsigned char bfnDwToA(unsigned long dwData, char* cpPtr)
 {
-
+    return (unsigned char)wfnConvertIntToAsc(dwData, 
+                                             (unsigned char*)cpPtr, 
+                                             10);
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -277,7 +356,16 @@ unsigned char bfnDwToA(unsigned long dwData, char* cpPtr)
  **/
 unsigned char bfnByteFlip(unsigned char bData)
 {
+    unsigned char ret = bData;
+    unsigned char index = 0;
 
+    while (index < 8)
+    {
+        ret |= bData & (1 << index);
+        index++;
+    }
+
+    return ret;
 }
 
 /**
@@ -286,7 +374,16 @@ unsigned char bfnByteFlip(unsigned char bData)
  **/
 unsigned short wfnWordFlip(unsigned short wData)
 {
+    unsigned short ret = wData;
+    unsigned char index = 0;
 
+    while (index < 16)
+    {
+        ret |= wData & (1 << index);
+        index++;
+    }
+
+    return ret;
 }
 
 /**
@@ -295,7 +392,16 @@ unsigned short wfnWordFlip(unsigned short wData)
  **/
 unsigned long dwfnDWordFlip(unsigned long dwData)
 {
+    unsigned long ret = dwData;
+    unsigned char index = 0;
 
+    while (index < 32)
+    {
+        ret |= dwData & (1 << index);
+        index++;
+    }
+
+    return ret;
 }
 
 /**
@@ -304,7 +410,7 @@ unsigned long dwfnDWordFlip(unsigned long dwData)
  **/
 unsigned char bfnNibbleSwap(unsigned char bData)
 {
-
+    return (((bData & 0x0F) << 4) | ((bData & 0xF0) >> 4));
 }
 
 /**
@@ -313,7 +419,7 @@ unsigned char bfnNibbleSwap(unsigned char bData)
  **/
 unsigned short wfnByteSwap(unsigned short wData)
 {
-
+    return (((wData & 0x00FF) << 8) | ((wData & 0xFF00) >> 8));
 }
 
 /**
@@ -322,5 +428,5 @@ unsigned short wfnByteSwap(unsigned short wData)
  **/
 unsigned long dwfnWordSwap(unsigned long dwData)
 {
-
+    return (((dwData & 0x0000FFFF) << 16) | ((dwData & 0xFFFF0000) >> 16));
 }

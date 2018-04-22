@@ -320,7 +320,7 @@ void vfnSort (unsigned char* bpString, unsigned short wStringSize)
 /**
 Descripcion: Invierte los caracteres de un string
 **/
-static void vfnReverseStr(unsigned char *str)
+void vfnReverseStr(unsigned char *str)
 {
     /* get range */
     unsigned char * start = str;
@@ -345,7 +345,7 @@ static void vfnReverseStr(unsigned char *str)
 Descripcion: convierte un entero de 16 bits a ascii de acuerdo a
 la base enviada 
 **/
-static unsigned short wfnConvertIntToAsc(unsigned short n, unsigned char * str, unsigned short base)
+unsigned short wfnConvertIntToAsc(unsigned long n, unsigned char * str, unsigned short base)
 {
     unsigned char res = 0;
     unsigned char* p = str;
@@ -430,7 +430,7 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                     case 'd':
                         int_value = *((unsigned short*)(args[index_arg]));
                         //convert int to str
-                        len = wfnConvertIntToAsc(int_value, strConv, 10);
+                        len = wfnConvertIntToAsc((unsigned long)int_value, strConv, 10);
 
                         if (len > 0)
                         {
@@ -464,7 +464,7 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                     case 'x':
                         int_value = *((unsigned short*)(args[index_arg]));
                         //convert int to hex
-                        len = wfnConvertIntToAsc(int_value, strConv, 16);
+                        len = wfnConvertIntToAsc((unsigned long)int_value, strConv, 16);
 
                         if (len > 0)
                         {
@@ -485,7 +485,7 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                     case 'b':
                         int_value = *((unsigned short*)(args[index_arg]));
                         //convert int to bin
-                        len = wfnConvertIntToAsc(int_value, strConv, 2);
+                        len = wfnConvertIntToAsc((unsigned long)int_value, strConv, 2);
 
                         if (len > 0)
                         {

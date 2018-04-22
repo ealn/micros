@@ -94,6 +94,17 @@ unsigned short wfnOccurrence(unsigned char  bSymbol,
 void vfnSort (unsigned char* bpString, unsigned short wStringSize);
 
 /**
+Descripcion: Invierte los caracteres de un string
+**/
+void vfnReverseStr(unsigned char *str);
+
+/**
+Descripcion: convierte un entero de 16 bits a ascii de acuerdo a
+la base enviada 
+**/
+unsigned short wfnConvertIntToAsc(unsigned long n, unsigned char * str, unsigned short base);
+
+/**
  Descripcion : Formatea en la cadena string los datos siguiendo
  el formato. Devuelve el tamaño de la cadena generada
     %c – imprime el carácter
