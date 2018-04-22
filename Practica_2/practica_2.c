@@ -200,14 +200,14 @@ unsigned char bfnCmdLine(char* cpCmd, char** cpCmdList)
 unsigned char bfnLog2 (unsigned long dwNum)
 {
     unsigned char  numBits = 1;
-    unsigned char  index = 1;
+    unsigned char  index = 0;
 
-    while (index <= 32)
+    while (index < NUMBER_BITS_LONG)
     {
         if (dwNum & (1 << index))
         {
             //update with the last 1
-            numBits = index;
+            numBits = index + 1;
         }
 
         index++; 
@@ -258,26 +258,7 @@ unsigned long dwAToUL (char* cpPtr)
 **/
 unsigned short wAToW (char* cpPtr)
 {
-    unsigned short  ret = 0;
-    char           *p = cpPtr;
-
-    while (*p != '\0')
-    {
-        if (*p < '0' || *p > '9')   //check invalid character
-        {
-            ret = 0;
-            break;
-        }
-        else
-        {
-            ret *= 10;
-            ret += *p - '0';
-        }
-
-        p++; 
-    }
-
-    return ret;
+    return (unsigned short)dwAToUL(cpPtr);
 }
 
 /**
@@ -288,26 +269,7 @@ unsigned short wAToW (char* cpPtr)
  **/
 unsigned char bAtoB(char* cpPtr)
 {
-    unsigned char   ret = 0;
-    char           *p = cpPtr;
-
-    while (*p != '\0')
-    {
-        if (*p < '0' || *p > '9')   //check invalid character
-        {
-            ret = 0;
-            break;
-        }
-        else
-        {
-            ret *= 10;
-            ret += *p - '0';
-        }
-
-        p++; 
-    }
-
-    return ret;
+    return (unsigned char)dwAToUL(cpPtr);
 }
 
 /**
@@ -356,12 +318,17 @@ unsigned char bfnDwToA(unsigned long dwData, char* cpPtr)
  **/
 unsigned char bfnByteFlip(unsigned char bData)
 {
-    unsigned char ret = bData;
+    unsigned char ret = 0;
     unsigned char index = 0;
+    unsigned char bit = 1 << (NUMBER_BITS_CHAR - 1);
 
-    while (index < 8)
+    while (index < NUMBER_BITS_CHAR)
     {
-        ret |= bData & (1 << index);
+        if (bData & (bit >> index))
+        {
+            ret |= 1 << index;
+        }
+
         index++;
     }
 
@@ -374,12 +341,17 @@ unsigned char bfnByteFlip(unsigned char bData)
  **/
 unsigned short wfnWordFlip(unsigned short wData)
 {
-    unsigned short ret = wData;
+    unsigned short ret = 0;
     unsigned char index = 0;
+    unsigned short bit = 1 << (NUMBER_BITS_SHORT - 1);
 
-    while (index < 16)
+    while (index < NUMBER_BITS_SHORT)
     {
-        ret |= wData & (1 << index);
+        if (wData & (bit >> index))
+        {
+            ret |= 1 << index;
+        }
+
         index++;
     }
 
@@ -392,12 +364,17 @@ unsigned short wfnWordFlip(unsigned short wData)
  **/
 unsigned long dwfnDWordFlip(unsigned long dwData)
 {
-    unsigned long ret = dwData;
+    unsigned long ret = 0;
     unsigned char index = 0;
+    unsigned long bit = 1 << (NUMBER_BITS_LONG - 1);
 
-    while (index < 32)
+    while (index < NUMBER_BITS_LONG)
     {
-        ret |= dwData & (1 << index);
+        if (dwData & (bit >> index))
+        {
+            ret |= 1 << index;
+        }
+
         index++;
     }
 
@@ -410,7 +387,10 @@ unsigned long dwfnDWordFlip(unsigned long dwData)
  **/
 unsigned char bfnNibbleSwap(unsigned char bData)
 {
-    return (((bData & 0x0F) << 4) | ((bData & 0xF0) >> 4));
+    unsigned char low = bData & 0x0F;
+    unsigned char high = bData & 0xF0;
+
+    return ((low << (NUMBER_BITS_CHAR/2)) | (high >> (NUMBER_BITS_CHAR/2)));
 }
 
 /**
@@ -419,7 +399,10 @@ unsigned char bfnNibbleSwap(unsigned char bData)
  **/
 unsigned short wfnByteSwap(unsigned short wData)
 {
-    return (((wData & 0x00FF) << 8) | ((wData & 0xFF00) >> 8));
+    unsigned short low = wData & 0x00FF;
+    unsigned short high = wData & 0xFF00;
+
+    return ((low << (NUMBER_BITS_SHORT/2)) | (high >> (NUMBER_BITS_SHORT/2)));
 }
 
 /**
@@ -428,5 +411,8 @@ unsigned short wfnByteSwap(unsigned short wData)
  **/
 unsigned long dwfnWordSwap(unsigned long dwData)
 {
-    return (((dwData & 0x0000FFFF) << 16) | ((dwData & 0xFFFF0000) >> 16));
+    unsigned long low = dwData & 0x0000FFFF;
+    unsigned long high = dwData & 0xFFFF0000;
+
+    return ((low << (NUMBER_BITS_LONG / 2)) | (high >> (NUMBER_BITS_LONG / 2))); 
 }
