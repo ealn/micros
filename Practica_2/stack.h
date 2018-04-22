@@ -24,13 +24,13 @@ void stackInit(void);
  se puede meter una parte, entonces regresa la cantidad de datos 
  que si entro 
 **/
-unsigned char stackPush(char* data, unsigned short size);
+unsigned short stackPush(char* data, unsigned short size);
 
 /**
  Descripcion: extrae a data la cantidad de datos indicada por 
  size del Stack. Se regresa la cantidad de datos extraidos. Si 
  el Stack está vacio, se regresa 0. 
 **/
-unsigned char stackPop(char* data, unsigned short size);
+unsigned short stackPop(char* data, unsigned short size);
 
 #endif /* ifndef _STACK_H_ */

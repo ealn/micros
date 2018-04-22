@@ -58,14 +58,14 @@ void vfnQueueInit(void);
  solo se puede meter una parte, entonces se regresa la cantidad 
  que si entro. 
 **/
-unsigned char bfnEnqueue(char* cpData, unsigned short wSize);
+unsigned short bfnEnqueue(char* cpData, unsigned short wSize);
 
 /**
  Descripcion: extrae a cpData la cantidad de datos indicadas por 
  wSize del Queue. Se regresa la cantidad de datos extraidos. Si 
  el queue está vacio, se regresa 0 
 **/
-unsigned char bfnDequeue(char* cpData, unsigned short wSize);
+unsigned short bfnDequeue(char* cpData, unsigned short wSize);
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////// STACK MEMORY ////////////////////////////////
@@ -84,14 +84,14 @@ void vfnStackInit(void);
  se puede meter una parte, entonces regresa la cantidad de datos 
  que si entro 
 **/
-unsigned char bfnStackPush(char* cpData, unsigned short wSize);
+unsigned short bfnStackPush(char* cpData, unsigned short wSize);
 
 /**
  Descripcion: extrae a cpData la cantidad de datos indicada por 
  wSize del Stack. Se regresa la cantidad de datos extraidos. Si 
  el Stack está vacio, se regresa 0. 
 **/
-unsigned char bfnStackPop(char* cpData, unsigned short wSize);
+unsigned short bfnStackPop(char* cpData, unsigned short wSize);
 
 /////////////////////////////////////////////////////////////////////////
 /////////////////////////// GENERAL UTILS ///////////////////////////////

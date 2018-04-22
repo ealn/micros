@@ -4,27 +4,27 @@
 /**                                                                   **/
 /** Autor: Efrain Adrian Luna Nevarez                                 **/
 /** Fecha: 18/03/2018                                                 **/
-/** Stack Source File                                                 **/
+/** Queue Source File                                                 **/
 /**                                                                   **/
 /***********************************************************************/
 
-#include "stack.h"
+#include "queue.h"
 #include "defines.h"
 
 #define   NUMBER_BLOCKS          256                            //-> 256b
 
-unsigned short g_numBytesUsedStack = 0;
+unsigned short g_numBytesUsedQueue = 0;
 
 //Reserve space for the stack
-unsigned char g_stack[NUMBER_BLOCKS];
+unsigned char g_queue[NUMBER_BLOCKS];
 
 //Pointers
-unsigned char * g_currentStackEntry = g_stack;
+unsigned char * g_currentQueueEntry = g_queue;
 
-void stackInit(void)
+void queueInit(void)
 {
     unsigned short i = 0;
-    unsigned char *entry = g_stack;
+    unsigned char *entry = g_queue;
 
     //clean memory
     while (i < NUMBER_BLOCKS)
@@ -34,18 +34,18 @@ void stackInit(void)
         i++;
     }
 
-    g_currentStackEntry = g_stack;
-    g_numBytesUsedStack = 0;
+    g_currentQueueEntry = g_queue;
+    g_numBytesUsedQueue = 0;
 }
 
-unsigned short stackPush(char* data, unsigned short size)
+unsigned short enqueue(char* data, unsigned short size)
 {
     unsigned short retSize = 0;
     unsigned short i = 0;
 
-    if (size > (NUMBER_BLOCKS - g_numBytesUsedStack))
+    if (size > (NUMBER_BLOCKS - g_numBytesUsedQueue))
     {
-        retSize = NUMBER_BLOCKS - g_numBytesUsedStack;
+        retSize = NUMBER_BLOCKS - g_numBytesUsedQueue;
     }
     else
     {
@@ -56,28 +56,28 @@ unsigned short stackPush(char* data, unsigned short size)
     {
         while (i < retSize) 
         {
-            *g_currentStackEntry = *data;
-            g_currentStackEntry++;
+            *g_currentQueueEntry = *data;
+            g_currentQueueEntry++;
             data++;
             i++;
         }
 
-        g_numBytesUsedStack += retSize; 
+        g_numBytesUsedQueue += retSize; 
     }
 
     return retSize; 
 }
 
-unsigned short stackPop(char* data, unsigned short size)
+unsigned short dequeue(char* data, unsigned short size)
 {
     unsigned short retSize = 0;
     unsigned short i = 0;
 
-    if (g_numBytesUsedStack > 0)
+    if (g_numBytesUsedQueue > 0)
     {
-        if (size > g_numBytesUsedStack)
+        if (size > g_numBytesUsedQueue)
         {
-            retSize = g_numBytesUsedStack;
+            retSize = g_numBytesUsedQueue;
         }
         else
         {
@@ -88,13 +88,13 @@ unsigned short stackPop(char* data, unsigned short size)
         {
             while (i < retSize) 
             {
-                *data = *g_currentStackEntry;
-                g_currentStackEntry--;
+                *data = *g_currentQueueEntry;
+                g_currentQueueEntry--;
                 data++;
                 i++;
             }
             
-            g_numBytesUsedStack -= retSize; 
+            g_numBytesUsedQueue -= retSize; 
         }
     }
 

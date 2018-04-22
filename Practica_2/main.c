@@ -257,22 +257,96 @@ void test_calloc(void)
 
 void test_vfnQueueInit(void)
 {
+    extern unsigned short g_numBytesUsedQueue;
+    extern unsigned char  g_queue[];
+    extern char * g_currentQueueEntry;
+    unsigned char exp_queue[256];
+    unsigned short exp_numb = 0;
+    unsigned short i = 0;
+    short ret = 0;
 
+    for (i = 0; i < 256; i++)
+    {
+        exp_queue[i] = 0;
+    }
+
+    vfnQueueInit();
+
+    /////////////////////////// Test Values ///////////////////////////
+    ret = check_test("vfnQueueInit()", 1, (void *)g_queue, (void *)exp_queue,  sizeof(unsigned char)*256);
+    ret = check_test("vfnQueueInit()", 2, (void *)&g_numBytesUsedQueue, (void *)&exp_numb,  sizeof(unsigned short));
+    ret = check_test("vfnQueueInit()", 3, (void *)g_currentQueueEntry, (void *)g_queue,  sizeof(unsigned char)*256);
 }
 
 void test_bfnEnqueue(void)
 {
+    char data1[16];
+    char data2[120];
+    char data3[250];
+    unsigned short res = 0;
+    unsigned short exp = 0;
+    short ret = 0;
 
+    //init queue
+    vfnQueueInit();
+
+    ////////////////////////////// First test  ////////////////////////////////
+
+    exp = 16;
+    res = bfnEnqueue(data1, 16);
+    ret = check_test("bfnEnqueue()", 1, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    ////////////////////////////// Second test  ////////////////////////////////
+
+    exp = 120;
+    res = bfnEnqueue(data2, 120);
+    ret = check_test("bfnEnqueue()", 2, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    ////////////////////////////// Third test  ////////////////////////////////
+
+    exp = 120;
+    res = bfnEnqueue(data3, 250);
+    ret = check_test("bfnEnqueue()", 3, (void *)&res, (void *)&exp,  sizeof(unsigned short));
 }
 
 void test_bfnDequeue(void)
 {
+    char data1[16];
+    char data2[120];
+    char data3[250];
+    char queue_data[256];
+    unsigned short res = 0;
+    unsigned short exp = 0;
+    short ret = 0;
 
+    //init stack
+    vfnQueueInit();
+
+    ////////////////////////////// First test  ////////////////////////////////
+
+    exp = 0;   //Empty queue
+    res = bfnDequeue(data1, 16);
+    ret = check_test("bfnDequeue()", 1, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    //Fill Queue
+    bfnEnqueue(queue_data, 256);
+
+    ////////////////////////////// Second test  ////////////////////////////////
+
+    exp = 120;
+    res = bfnDequeue(data2, 120);
+    ret = check_test("bfnDequeue()", 2, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    ////////////////////////////// Third test  ////////////////////////////////
+
+    exp = 136;
+    res = bfnDequeue(data3, 250);
+    ret = check_test("bfnDequeue()", 3, (void *)&res, (void *)&exp,  sizeof(unsigned short));
 }
 
 void test_vfnStackInit(void)
 {
-    extern unsigned short g_numBytesUsed;
+    extern unsigned short g_numBytesUsedStack;
     extern unsigned char  g_stack[];
     extern char * g_currentStackEntry;
     unsigned char exp_stack[256];
@@ -289,18 +363,74 @@ void test_vfnStackInit(void)
 
     /////////////////////////// Test Values ///////////////////////////
     ret = check_test("vfnStackInit()", 1, (void *)g_stack, (void *)exp_stack,  sizeof(unsigned char)*256);
-    ret = check_test("vfnStackInit()", 2, (void *)&g_numBytesUsed, (void *)&exp_numb,  sizeof(unsigned short));
+    ret = check_test("vfnStackInit()", 2, (void *)&g_numBytesUsedStack, (void *)&exp_numb,  sizeof(unsigned short));
     ret = check_test("vfnStackInit()", 3, (void *)g_currentStackEntry, (void *)g_stack,  sizeof(unsigned char)*256);
 }
 
 void test_bfnStackPush(void)
 {
+    char data1[16];
+    char data2[120];
+    char data3[250];
+    unsigned short res = 0;
+    unsigned short exp = 0;
+    short ret = 0;
 
+    //init stack
+    vfnStackInit();
+
+    ////////////////////////////// First test  ////////////////////////////////
+
+    exp = 16;
+    res = bfnStackPush(data1, 16);
+    ret = check_test("bfnStackPush()", 1, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    ////////////////////////////// Second test  ////////////////////////////////
+
+    exp = 120;
+    res = bfnStackPush(data2, 120);
+    ret = check_test("bfnStackPush()", 2, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    ////////////////////////////// Third test  ////////////////////////////////
+
+    exp = 120;
+    res = bfnStackPush(data3, 250);
+    ret = check_test("bfnStackPush()", 3, (void *)&res, (void *)&exp,  sizeof(unsigned short));
 }
 
 void test_bfnStackPop(void)
 {
+    char data1[16];
+    char data2[120];
+    char data3[250];
+    char stack_data[256];
+    unsigned short res = 0;
+    unsigned short exp = 0;
+    short ret = 0;
 
+    //init stack
+    vfnStackInit();
+
+    ////////////////////////////// First test  ////////////////////////////////
+
+    exp = 0;   //Empty stack
+    res = bfnStackPop(data1, 16);
+    ret = check_test("bfnStackPop()", 1, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    //Fill Stack
+    bfnStackPush(stack_data, 256);
+
+    ////////////////////////////// Second test  ////////////////////////////////
+
+    exp = 120;
+    res = bfnStackPop(data2, 120);
+    ret = check_test("bfnStackPop()", 2, (void *)&res, (void *)&exp,  sizeof(unsigned short));
+
+    ////////////////////////////// Third test  ////////////////////////////////
+
+    exp = 136;
+    res = bfnStackPop(data3, 250);
+    ret = check_test("bfnStackPop()", 3, (void *)&res, (void *)&exp,  sizeof(unsigned short));
 }
 
 void test_bfnCmdLine(void)

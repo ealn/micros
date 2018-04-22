@@ -9,6 +9,7 @@
 /***********************************************************************/
 
 #include "heap.h"
+#include "defines.h"
 
 #define   BLOCKS_PER_CTRL_B      4
 #define   NUMBER_BLOCKS          256                                    //-> 256b
