@@ -8,6 +8,11 @@
 /**                                                                   **/
 /***********************************************************************/
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef _LED_H_
 #define _LED_H_
 
@@ -32,3 +37,7 @@ void turnOnOffLed(Led  * pLed, unsigned char turnOn);
 void turnOnOffLedAuto(Led  * pLed);
 
 #endif /* ifndef _LED_H_ */
+
+#ifdef __cplusplus
+}
+#endif

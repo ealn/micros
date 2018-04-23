@@ -8,6 +8,11 @@
 /**                                                                   **/
 /***********************************************************************/
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef _DEFINES_H_
 #define _DEFINES_H_
 
@@ -18,3 +23,7 @@
 #define NUMBER_BITS_LONG          8*sizeof(long)
 
 #endif /* ifndef _DEFINES_H_ */
+
+#ifdef __cplusplus
+}
+#endif

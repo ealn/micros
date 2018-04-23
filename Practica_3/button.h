@@ -8,6 +8,11 @@
 /**                                                                   **/
 /***********************************************************************/
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef _BUTTON_H_
 #define _BUTTON_H_
 
@@ -36,3 +41,7 @@ void initButton(Button           * pButton,
 unsigned char checkButton(Button *pButton);
 
 #endif /* ifndef _BUTTON_H_ */
+
+#ifdef __cplusplus
+}
+#endif

@@ -8,6 +8,11 @@
 /**                                                                   **/
 /***********************************************************************/
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef _DISPLAY_H_
 #define _DISPLAY_H_
 
@@ -31,3 +36,7 @@ void initDisplayManager(DisplayManager   * pDisplayManager,
 void updateDisplay(DisplayManager * pDisplayManager, unsigned long value);
 
 #endif /* ifndef _DISPLAY_H_ */
+
+#ifdef __cplusplus
+}
+#endif
