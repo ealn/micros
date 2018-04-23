@@ -9,6 +9,7 @@
 /***********************************************************************/
 
 #include "practica_1.h"
+#include "defines.h"
 
 /**
  Descripcion: Copia los datos del bloque apuntado por bpSource
@@ -436,12 +437,12 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                             if (add_zero)
                             {
                                 //fill with 0
-                                vfnMemSet(str, '0', 5 - len);
+                                vfnMemSet((unsigned char*)str, '0', 5 - len);
                                 str += (5 - len);
                             }
 
                             //insert str
-                            vfnMemCpy(strConv, str, len);
+                            vfnMemCpy(strConv, (unsigned char*)str, len);
                             str += len;
                         }
                         index_arg++;
@@ -454,7 +455,7 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                         if (len > 0)
                         {
                             //insert str
-                            vfnMemCpy(str_value, str, len);
+                            vfnMemCpy(str_value, (unsigned char*)str, len);
                             str += len;
                         }
 
@@ -470,12 +471,12 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                             if (add_zero)
                             {
                                 //fill with 0
-                                vfnMemSet(str, '0', 4 - len);
+                                vfnMemSet((unsigned char*)str, '0', 4 - len);
                                 str += (4 - len);
                             }
 
                             //insert str
-                            vfnMemCpy(strConv, str, len);
+                            vfnMemCpy(strConv, (unsigned char*)str, len);
                             str += len;
                         }
                         index_arg++;
@@ -491,12 +492,12 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
                             if (add_zero)
                             {
                                 //fill with 0
-                                vfnMemSet(str, '0', 16 - len);
+                                vfnMemSet((unsigned char*)str, '0', 16 - len);
                                 str += (16 - len);
                             }
 
                             //insert str
-                            vfnMemCpy(strConv, str, len);
+                            vfnMemCpy(strConv, (unsigned char*)str, len);
                             str += len;
                         }
                         index_arg++;
@@ -535,7 +536,7 @@ unsigned short wfnSprintf (char* string, unsigned char* fmt, void ** args)
             fmt++; 
         }
 
-        len = wfnStrLen(string);
+        len = wfnStrLen((unsigned char*)string);
     }
 
     return len;

@@ -11,8 +11,6 @@
 #ifndef _PRACTICA_1_H_
 #define _PRACTICA_1_H_
 
-#define NULL  (void *)0
-
 /**
  Descripcion: Copia los datos del bloque apuntado por bpSource
  al bloque apuntado por bpDest

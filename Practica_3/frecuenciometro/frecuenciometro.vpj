@@ -10,7 +10,7 @@
         Type="gnuc"
         DebugCallbackName="gdb"
         Version="1"
-        OutputFile="%bdvs_practica1.exe"
+        OutputFile="%bdfrecuenciometro.exe"
         CompilerConfigName="Latest Version">
         <Menu>
             <Target
@@ -105,7 +105,7 @@
         Type="gnuc"
         DebugCallbackName="gdb"
         Version="1"
-        OutputFile="%bdvs_practica1.exe"
+        OutputFile="%bdfrecuenciometro.exe"
         CompilerConfigName="Latest Version">
         <Menu>
             <Target
@@ -199,14 +199,18 @@
         <Folder
             Name="Source Files"
             Filters="*.c;*.C;*.cc;*.cpp;*.cp;*.cxx;*.c++;*.prg;*.pas;*.dpr;*.asm;*.s;*.bas;*.java;*.cs;*.sc;*.e;*.cob;*.html;*.rc;*.tcl;*.py;*.pl;*.d;*.m;*.mm;*.go">
+            <F N="../button.c"/>
+            <F N="../display.c"/>
+            <F N="../led.c"/>
             <F N="../main.c"/>
-            <F N="../practica_1.c"/>
         </Folder>
         <Folder
             Name="Header Files"
             Filters="*.h;*.H;*.hh;*.hpp;*.hxx;*.inc;*.sh;*.cpy;*.if">
+            <F N="../button.h"/>
             <F N="../defines.h"/>
-            <F N="../practica_1.h"/>
+            <F N="../display.h"/>
+            <F N="../led.h"/>
         </Folder>
         <Folder
             Name="Resource Files"
