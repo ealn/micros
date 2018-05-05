@@ -2,7 +2,8 @@
 /**************** Practica #3 Arq. de Microcomputadoras ****************/
 /***********************************************************************/
 /**                                                                   **/
-/** Autor: Efrain Adrian Luna Nevarez                                 **/
+/** Autores: Efrain Adrian Luna Nevarez                               **/
+/**          Jose Francisco Velazquez Aguirre                         **/
 /** Fecha: 18/03/2018                                                 **/
 /** Display Driver Header File                                        **/
 /**                                                                   **/

@@ -3,7 +3,7 @@
 /***********************************************************************/
 /**                                                                   **/
 /** Autores: Efrain Adrian Luna Nevarez                               **/
-/**          Francisco                                                **/
+/**          Jose Francisco Velazquez Aguirre                         **/
 /** Fecha: 18/03/2018                                                 **/
 /** Frecuenciometro Main Source File                                  **/
 /**                                                                   **/

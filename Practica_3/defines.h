@@ -2,7 +2,8 @@
 /**************** Practica #1 Arq. de Microcomputadoras ****************/
 /***********************************************************************/
 /**                                                                   **/
-/** Autor: Efrain Adrian Luna Nevarez                                 **/
+/** Autores: Efrain Adrian Luna Nevarez                               **/
+/**          Jose Francisco Velazquez Aguirre                         **/
 /** Fecha: 18/03/2018                                                 **/
 /** Defines Header File                                               **/
 /**                                                                   **/
