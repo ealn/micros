@@ -28,9 +28,9 @@ typedef struct __Button
     ButtonState        state;         // State
     ButtonInFunction   inFunction;    // Function to check the button state
     unsigned char      isEnableInLow; // Is button enable in low
-    unsigned long      counter;       // Counter
-    unsigned long      mainDelay;     // Main delay in ns
     unsigned char      isPressed;     // Is button pressed
+    unsigned long      counter;       // Counter
+    unsigned long      mainDelay;     // Main delay in microseg
 }Button;
 
 void initButton(Button           * pButton,

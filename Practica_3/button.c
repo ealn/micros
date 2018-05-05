@@ -11,7 +11,7 @@
 #include "button.h"
 #include "defines.h"
 
-#define  REBOUND_EFECT_NSEG      100*1000*1000   //100ms = 100 000 000 nseg
+#define  REBOUND_EFECT_NSEG      100*1000   //100ms = 100 000 microseg
 
 void initButton(Button           * pButton,
                 ButtonInFunction   inFunction,

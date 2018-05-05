@@ -22,13 +22,15 @@ typedef struct __Led
 {
     unsigned char      turnOn;         // is turn on the led
     LedOutFunction     outFunction;    // Function to turn on/off the led
+    unsigned char      isEnableInLow;  // Is led enable in low
     unsigned long      delay;          // Delay in ms (0 means forever)
     unsigned long      counter;        // Counter
-    unsigned long      mainDelay;      // Main delay in ns
+    unsigned long      mainDelay;      // Main delay in microseg
 }Led;
 
 void initLed(Led              * pLed,
              LedOutFunction     outFunction,
+             unsigned char      isEnableInLow,
              unsigned long      delay,
              unsigned long      mainDelay);
 

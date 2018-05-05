@@ -11,24 +11,23 @@
 #include "led.h"
 #include "defines.h"
 
-#define FACTOR_TO_NS      1000*1000
+#define FACTOR_TO_MICROSEG      1000
 
 void initLed(Led              * pLed,
              LedOutFunction     outFunction,
+             unsigned char      isEnableInLow,
              unsigned long      delay,
              unsigned long      mainDelay)
 {
-    unsigned long ms = 0;
-
     if (pLed != NULL)
     {
         pLed->turnOn = 0;
         pLed->outFunction = outFunction;
+        pLed->isEnableInLow = isEnableInLow;
         pLed->delay = delay;
         pLed->mainDelay = mainDelay;
 
-        ms = (unsigned long)(FACTOR_TO_NS / pLed->mainDelay);
-        pLed->counter = pLed->delay * ms;
+        pLed->counter = pLed->delay * FACTOR_TO_MICROSEG / pLed->mainDelay;
     }
 }
 
@@ -45,14 +44,19 @@ void turnOnOffLed(Led  * pLed, unsigned char turnOn)
             pLed->turnOn = 1;
         }
 
-        pLed->outFunction(pLed->turnOn);
+        if (pLed->isEnableInLow)
+        {
+            pLed->outFunction(!pLed->turnOn); 
+        }
+        else
+        {
+            pLed->outFunction(pLed->turnOn);
+        }
     }
 }
 
 void turnOnOffLedAuto(Led  * pLed)
 {
-    unsigned long ms = 0;
-
     if (pLed != NULL)
     {
         //wait
@@ -68,10 +72,16 @@ void turnOnOffLedAuto(Led  * pLed)
                 pLed->turnOn = 1;
             }
 
-            pLed->outFunction(pLed->turnOn);
+            if (pLed->isEnableInLow)
+            {
+                pLed->outFunction(!pLed->turnOn); 
+            }
+            else
+            {
+                pLed->outFunction(pLed->turnOn);
+            }
 
-            ms = (unsigned long)(FACTOR_TO_NS / pLed->mainDelay);
-            pLed->counter = pLed->delay * ms;
+            pLed->counter = pLed->delay * FACTOR_TO_MICROSEG / pLed->mainDelay;
         }
         else
         {

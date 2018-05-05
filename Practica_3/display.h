@@ -20,20 +20,25 @@ typedef void (*DisplayOutFunction)(unsigned char value, unsigned char displayNum
 
 typedef struct __DisplayManager
 {
-    unsigned long      value;
-    unsigned char      numberOfDisplays;
-    DisplayOutFunction outFunction;
-    unsigned long      counter;       // Counter
-    unsigned long      mainDelay;     // Main delay in ns
+    unsigned long      value;            // Display value
+    unsigned char      numberOfDisplays; // Number of displays
+    unsigned char      isEnableInLow;    // True if the display is anode commun
+    DisplayOutFunction outFunction;      // output function
+    unsigned long      refreshCounter;   // Refresh counter
+    unsigned long      updateCounter;    // Update counter
+    unsigned long      mainDelay;        // Main delay in microseg
 }DisplayManager;
 
 void initDisplayManager(DisplayManager   * pDisplayManager,
                         unsigned long      value,
                         unsigned char      numberOfDisplays,
+                        unsigned char      isEnableInLow,
                         DisplayOutFunction outFunction,
                         unsigned long      mainDelay);
 
-void updateDisplay(DisplayManager * pDisplayManager, unsigned long value);
+unsigned char updateDisplay(DisplayManager * pDisplayManager, unsigned long value);
+
+unsigned char refreshDisplay(DisplayManager * pDisplayManager);
 
 #endif /* ifndef _DISPLAY_H_ */
 
